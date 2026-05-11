@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "visibility": { "type": "string", "enum": ["public", "private"] }
+  },
+  "required": ["visibility"],
+  "x-readme-ref-name": "UpdateVisibilityBody"
+}

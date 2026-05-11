@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "objectKey": { "type": "string", "minLength": 1 } },
+  "required": ["objectKey"],
+  "x-readme-ref-name": "CommitAvatarBody"
+}

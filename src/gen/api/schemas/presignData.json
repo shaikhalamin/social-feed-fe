@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "uploads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "r2Key": { "type": "string" },
+          "uploadUrl": { "type": "string", "format": "uri" },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp",
+            "example": "2026-05-10T10:30:00.000Z"
+          },
+          "contentType": {
+            "type": "string",
+            "enum": ["image/jpeg", "image/png", "image/webp"]
+          }
+        },
+        "required": ["r2Key", "uploadUrl", "expiresAt", "contentType"],
+        "x-readme-ref-name": "PresignEntry"
+      }
+    }
+  },
+  "required": ["uploads"],
+  "x-readme-ref-name": "PresignData"
+}

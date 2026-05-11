@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address",
+      "example": "user@example.com"
+    },
+    "password": { "type": "string", "minLength": 8, "maxLength": 128 },
+    "firstName": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "lastName": { "type": "string", "minLength": 1, "maxLength": 60 }
+  },
+  "required": ["email", "password", "firstName", "lastName"],
+  "x-readme-ref-name": "SignupBody"
+}
