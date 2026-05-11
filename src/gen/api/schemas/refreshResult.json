@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "accessToken": { "type": "string" } },
+  "required": ["accessToken"],
+  "x-readme-ref-name": "RefreshResult"
+}

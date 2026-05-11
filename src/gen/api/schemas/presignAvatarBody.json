@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "contentType": {
+      "type": "string",
+      "enum": ["image/png", "image/jpeg", "image/webp"]
+    }
+  },
+  "required": ["contentType"],
+  "x-readme-ref-name": "PresignAvatarBody"
+}

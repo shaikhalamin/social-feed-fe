@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "content": { "type": "string", "maxLength": 10000 },
+    "visibility": { "type": "string", "enum": ["public", "private"] },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "r2Key": { "type": "string", "minLength": 1 },
+          "width": { "type": "integer", "exclusiveMinimum": 0 },
+          "height": { "type": "integer", "exclusiveMinimum": 0 },
+          "position": { "type": "integer", "minimum": 0, "maximum": 19 }
+        },
+        "required": ["r2Key", "width", "height", "position"]
+      },
+      "maxItems": 20,
+      "default": []
+    }
+  },
+  "required": ["content", "visibility"],
+  "x-readme-ref-name": "CreatePostBody"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "firstName": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "lastName": { "type": "string", "minLength": 1, "maxLength": 60 }
+  },
+  "x-readme-ref-name": "UpdateUserBody"
+}

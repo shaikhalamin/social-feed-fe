@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "status": { "type": "string", "enum": ["pending", "accepted"] },
+    "requesterId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    },
+    "acceptedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    }
+  },
+  "required": ["userId", "status", "requesterId", "createdAt", "acceptedAt"],
+  "x-readme-ref-name": "Friendship"
+}

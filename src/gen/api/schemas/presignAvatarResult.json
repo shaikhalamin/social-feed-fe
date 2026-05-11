@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "uploadUrl": { "type": "string", "format": "uri" },
+    "objectKey": { "type": "string" },
+    "publicUrl": { "type": ["string", "null"], "format": "uri" },
+    "expiresIn": { "type": "number" },
+    "contentType": { "type": "string" }
+  },
+  "required": [
+    "uploadUrl",
+    "objectKey",
+    "publicUrl",
+    "expiresIn",
+    "contentType"
+  ],
+  "x-readme-ref-name": "PresignAvatarResult"
+}
