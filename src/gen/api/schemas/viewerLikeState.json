@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "liked": { "type": "boolean" } },
+  "required": ["liked"],
+  "x-readme-ref-name": "ViewerLikeState"
+}

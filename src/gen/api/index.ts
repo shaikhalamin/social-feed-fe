@@ -9,6 +9,8 @@ export type { DeletePostMutationKey } from './hooks/useDeletePost.ts'
 export type { DeleteUserMutationKey } from './hooks/useDeleteUser.ts'
 export type { GetCacheHealthQueryKey } from './hooks/useGetCacheHealth.ts'
 export type { GetCacheHealthSuspenseQueryKey } from './hooks/useGetCacheHealthSuspense.ts'
+export type { GetCommentLikesPreviewQueryKey } from './hooks/useGetCommentLikesPreview.ts'
+export type { GetCommentLikesPreviewSuspenseQueryKey } from './hooks/useGetCommentLikesPreviewSuspense.ts'
 export type { GetCurrentUserQueryKey } from './hooks/useGetCurrentUser.ts'
 export type { GetCurrentUserSuspenseQueryKey } from './hooks/useGetCurrentUserSuspense.ts'
 export type { GetDbHealthQueryKey } from './hooks/useGetDbHealth.ts'
@@ -18,11 +20,15 @@ export type { GetFeedSuspenseQueryKey } from './hooks/useGetFeedSuspense.ts'
 export type { GetHealthQueryKey } from './hooks/useGetHealth.ts'
 export type { GetHealthSuspenseQueryKey } from './hooks/useGetHealthSuspense.ts'
 export type { GetPostQueryKey } from './hooks/useGetPost.ts'
+export type { GetPostLikesPreviewQueryKey } from './hooks/useGetPostLikesPreview.ts'
+export type { GetPostLikesPreviewSuspenseQueryKey } from './hooks/useGetPostLikesPreviewSuspense.ts'
 export type { GetPostSuspenseQueryKey } from './hooks/useGetPostSuspense.ts'
 export type { GetStorageHealthQueryKey } from './hooks/useGetStorageHealth.ts'
 export type { GetStorageHealthSuspenseQueryKey } from './hooks/useGetStorageHealthSuspense.ts'
 export type { GetUserQueryKey } from './hooks/useGetUser.ts'
 export type { GetUserSuspenseQueryKey } from './hooks/useGetUserSuspense.ts'
+export type { LikeCommentMutationKey } from './hooks/useLikeComment.ts'
+export type { LikePostMutationKey } from './hooks/useLikePost.ts'
 export type { ListCommentRepliesQueryKey } from './hooks/useListCommentReplies.ts'
 export type { ListCommentRepliesSuspenseQueryKey } from './hooks/useListCommentRepliesSuspense.ts'
 export type { ListCommentsQueryKey } from './hooks/useListComments.ts'
@@ -44,6 +50,8 @@ export type { PresignPostUploadsMutationKey } from './hooks/usePresignPostUpload
 export type { RefreshMutationKey } from './hooks/useRefresh.ts'
 export type { SendFriendRequestMutationKey } from './hooks/useSendFriendRequest.ts'
 export type { SignupMutationKey } from './hooks/useSignup.ts'
+export type { UnlikeCommentMutationKey } from './hooks/useUnlikeComment.ts'
+export type { UnlikePostMutationKey } from './hooks/useUnlikePost.ts'
 export type { UpdateCommentMutationKey } from './hooks/useUpdateComment.ts'
 export type { UpdatePostVisibilityMutationKey } from './hooks/useUpdatePostVisibility.ts'
 export type { UpdateUserMutationKey } from './hooks/useUpdateUser.ts'
@@ -61,6 +69,8 @@ export type { AuthSession } from './types/AuthSession.ts'
 export type { AuthorSummary } from './types/AuthorSummary.ts'
 export type { Comment } from './types/Comment.ts'
 export type { CommentAuthor } from './types/CommentAuthor.ts'
+export type { CommentCounters } from './types/CommentCounters.ts'
+export type { CommentViewerState } from './types/CommentViewerState.ts'
 export type {
   CommitAvatar200,
   CommitAvatar400,
@@ -165,6 +175,16 @@ export type {
   GetCacheHealthQueryResponse,
 } from './types/GetCacheHealth.ts'
 export type {
+  GetCommentLikesPreview200,
+  GetCommentLikesPreview400,
+  GetCommentLikesPreview401,
+  GetCommentLikesPreview404,
+  GetCommentLikesPreview500,
+  GetCommentLikesPreviewPathParams,
+  GetCommentLikesPreviewQuery,
+  GetCommentLikesPreviewQueryResponse,
+} from './types/GetCommentLikesPreview.ts'
+export type {
   GetCurrentUser200,
   GetCurrentUser401,
   GetCurrentUser404,
@@ -206,6 +226,16 @@ export type {
   GetPostQueryResponse,
 } from './types/GetPost.ts'
 export type {
+  GetPostLikesPreview200,
+  GetPostLikesPreview400,
+  GetPostLikesPreview401,
+  GetPostLikesPreview404,
+  GetPostLikesPreview500,
+  GetPostLikesPreviewPathParams,
+  GetPostLikesPreviewQuery,
+  GetPostLikesPreviewQueryResponse,
+} from './types/GetPostLikesPreview.ts'
+export type {
   GetStorageHealth200,
   GetStorageHealth500,
   GetStorageHealthQuery,
@@ -221,6 +251,28 @@ export type {
   GetUserQuery,
   GetUserQueryResponse,
 } from './types/GetUser.ts'
+export type {
+  LikeComment200,
+  LikeComment400,
+  LikeComment401,
+  LikeComment404,
+  LikeComment500,
+  LikeCommentMutation,
+  LikeCommentMutationResponse,
+  LikeCommentPathParams,
+} from './types/LikeComment.ts'
+export type {
+  LikePost200,
+  LikePost400,
+  LikePost401,
+  LikePost404,
+  LikePost500,
+  LikePostMutation,
+  LikePostMutationResponse,
+  LikePostPathParams,
+} from './types/LikePost.ts'
+export type { LikeState } from './types/LikeState.ts'
+export type { LikesPreview } from './types/LikesPreview.ts'
 export type {
   ListCommentReplies200,
   ListCommentReplies400,
@@ -307,6 +359,7 @@ export type {
 } from './types/Logout.ts'
 export type { LogoutResult } from './types/LogoutResult.ts'
 export type { Post, PostVisibilityEnumKey } from './types/Post.ts'
+export type { PostCounters } from './types/PostCounters.ts'
 export type { PostImage } from './types/PostImage.ts'
 export type {
   PresignAvatar200,
@@ -343,6 +396,7 @@ export type {
   PresignPostUploadsMutationRequest,
   PresignPostUploadsMutationResponse,
 } from './types/PresignPostUploads.ts'
+export type { ReactionUserSummary } from './types/ReactionUserSummary.ts'
 export type {
   Refresh200,
   Refresh401,
@@ -373,6 +427,26 @@ export type {
   SignupMutationResponse,
 } from './types/Signup.ts'
 export type { SignupBody } from './types/SignupBody.ts'
+export type {
+  UnlikeComment200,
+  UnlikeComment400,
+  UnlikeComment401,
+  UnlikeComment404,
+  UnlikeComment500,
+  UnlikeCommentMutation,
+  UnlikeCommentMutationResponse,
+  UnlikeCommentPathParams,
+} from './types/UnlikeComment.ts'
+export type {
+  UnlikePost200,
+  UnlikePost400,
+  UnlikePost401,
+  UnlikePost404,
+  UnlikePost500,
+  UnlikePostMutation,
+  UnlikePostMutationResponse,
+  UnlikePostPathParams,
+} from './types/UnlikePost.ts'
 export type {
   UpdateComment200,
   UpdateComment400,
@@ -417,6 +491,7 @@ export type {
 } from './types/UpdateVisibilityBody.ts'
 export type { User } from './types/User.ts'
 export type { UserSummary } from './types/UserSummary.ts'
+export type { ViewerLikeState } from './types/ViewerLikeState.ts'
 export { acceptFriendRequest } from './clients/acceptFriendRequest.ts'
 export { commitAvatar } from './clients/commitAvatar.ts'
 export { createComment } from './clients/createComment.ts'
@@ -427,13 +502,17 @@ export { deleteFriendRelationship } from './clients/deleteFriendRelationship.ts'
 export { deletePost } from './clients/deletePost.ts'
 export { deleteUser } from './clients/deleteUser.ts'
 export { getCacheHealth } from './clients/getCacheHealth.ts'
+export { getCommentLikesPreview } from './clients/getCommentLikesPreview.ts'
 export { getCurrentUser } from './clients/getCurrentUser.ts'
 export { getDbHealth } from './clients/getDbHealth.ts'
 export { getFeed } from './clients/getFeed.ts'
 export { getHealth } from './clients/getHealth.ts'
 export { getPost } from './clients/getPost.ts'
+export { getPostLikesPreview } from './clients/getPostLikesPreview.ts'
 export { getStorageHealth } from './clients/getStorageHealth.ts'
 export { getUser } from './clients/getUser.ts'
+export { likeComment } from './clients/likeComment.ts'
+export { likePost } from './clients/likePost.ts'
 export { listCommentReplies } from './clients/listCommentReplies.ts'
 export { listComments } from './clients/listComments.ts'
 export { listFriends } from './clients/listFriends.ts'
@@ -448,6 +527,8 @@ export { presignPostUploads } from './clients/presignPostUploads.ts'
 export { refresh } from './clients/refresh.ts'
 export { sendFriendRequest } from './clients/sendFriendRequest.ts'
 export { signup } from './clients/signup.ts'
+export { unlikeComment } from './clients/unlikeComment.ts'
+export { unlikePost } from './clients/unlikePost.ts'
 export { updateComment } from './clients/updateComment.ts'
 export { updatePostVisibility } from './clients/updatePostVisibility.ts'
 export { updateUser } from './clients/updateUser.ts'
@@ -484,6 +565,12 @@ export { useGetCacheHealth } from './hooks/useGetCacheHealth.ts'
 export { getCacheHealthSuspenseQueryKey } from './hooks/useGetCacheHealthSuspense.ts'
 export { getCacheHealthSuspenseQueryOptions } from './hooks/useGetCacheHealthSuspense.ts'
 export { useGetCacheHealthSuspense } from './hooks/useGetCacheHealthSuspense.ts'
+export { getCommentLikesPreviewQueryKey } from './hooks/useGetCommentLikesPreview.ts'
+export { getCommentLikesPreviewQueryOptions } from './hooks/useGetCommentLikesPreview.ts'
+export { useGetCommentLikesPreview } from './hooks/useGetCommentLikesPreview.ts'
+export { getCommentLikesPreviewSuspenseQueryKey } from './hooks/useGetCommentLikesPreviewSuspense.ts'
+export { getCommentLikesPreviewSuspenseQueryOptions } from './hooks/useGetCommentLikesPreviewSuspense.ts'
+export { useGetCommentLikesPreviewSuspense } from './hooks/useGetCommentLikesPreviewSuspense.ts'
 export { getCurrentUserQueryKey } from './hooks/useGetCurrentUser.ts'
 export { getCurrentUserQueryOptions } from './hooks/useGetCurrentUser.ts'
 export { useGetCurrentUser } from './hooks/useGetCurrentUser.ts'
@@ -511,6 +598,12 @@ export { useGetHealthSuspense } from './hooks/useGetHealthSuspense.ts'
 export { getPostQueryKey } from './hooks/useGetPost.ts'
 export { getPostQueryOptions } from './hooks/useGetPost.ts'
 export { useGetPost } from './hooks/useGetPost.ts'
+export { getPostLikesPreviewQueryKey } from './hooks/useGetPostLikesPreview.ts'
+export { getPostLikesPreviewQueryOptions } from './hooks/useGetPostLikesPreview.ts'
+export { useGetPostLikesPreview } from './hooks/useGetPostLikesPreview.ts'
+export { getPostLikesPreviewSuspenseQueryKey } from './hooks/useGetPostLikesPreviewSuspense.ts'
+export { getPostLikesPreviewSuspenseQueryOptions } from './hooks/useGetPostLikesPreviewSuspense.ts'
+export { useGetPostLikesPreviewSuspense } from './hooks/useGetPostLikesPreviewSuspense.ts'
 export { getPostSuspenseQueryKey } from './hooks/useGetPostSuspense.ts'
 export { getPostSuspenseQueryOptions } from './hooks/useGetPostSuspense.ts'
 export { useGetPostSuspense } from './hooks/useGetPostSuspense.ts'
@@ -526,6 +619,12 @@ export { useGetUser } from './hooks/useGetUser.ts'
 export { getUserSuspenseQueryKey } from './hooks/useGetUserSuspense.ts'
 export { getUserSuspenseQueryOptions } from './hooks/useGetUserSuspense.ts'
 export { useGetUserSuspense } from './hooks/useGetUserSuspense.ts'
+export { likeCommentMutationKey } from './hooks/useLikeComment.ts'
+export { likeCommentMutationOptions } from './hooks/useLikeComment.ts'
+export { useLikeComment } from './hooks/useLikeComment.ts'
+export { likePostMutationKey } from './hooks/useLikePost.ts'
+export { likePostMutationOptions } from './hooks/useLikePost.ts'
+export { useLikePost } from './hooks/useLikePost.ts'
 export { listCommentRepliesQueryKey } from './hooks/useListCommentReplies.ts'
 export { listCommentRepliesQueryOptions } from './hooks/useListCommentReplies.ts'
 export { useListCommentReplies } from './hooks/useListCommentReplies.ts'
@@ -589,6 +688,12 @@ export { useSendFriendRequest } from './hooks/useSendFriendRequest.ts'
 export { signupMutationKey } from './hooks/useSignup.ts'
 export { signupMutationOptions } from './hooks/useSignup.ts'
 export { useSignup } from './hooks/useSignup.ts'
+export { unlikeCommentMutationKey } from './hooks/useUnlikeComment.ts'
+export { unlikeCommentMutationOptions } from './hooks/useUnlikeComment.ts'
+export { useUnlikeComment } from './hooks/useUnlikeComment.ts'
+export { unlikePostMutationKey } from './hooks/useUnlikePost.ts'
+export { unlikePostMutationOptions } from './hooks/useUnlikePost.ts'
+export { useUnlikePost } from './hooks/useUnlikePost.ts'
 export { updateCommentMutationKey } from './hooks/useUpdateComment.ts'
 export { updateCommentMutationOptions } from './hooks/useUpdateComment.ts'
 export { useUpdateComment } from './hooks/useUpdateComment.ts'
@@ -618,7 +723,9 @@ export {
 export { authSessionSchema } from './zod/authSessionSchema.ts'
 export { authorSummarySchema } from './zod/authorSummarySchema.ts'
 export { commentAuthorSchema } from './zod/commentAuthorSchema.ts'
+export { commentCountersSchema } from './zod/commentCountersSchema.ts'
 export { commentSchema } from './zod/commentSchema.ts'
+export { commentViewerStateSchema } from './zod/commentViewerStateSchema.ts'
 export { commitAvatarBodySchema } from './zod/commitAvatarBodySchema.ts'
 export {
   commitAvatar200Schema,
@@ -711,6 +818,15 @@ export {
   getCacheHealthQueryResponseSchema,
 } from './zod/getCacheHealthSchema.ts'
 export {
+  getCommentLikesPreview200Schema,
+  getCommentLikesPreview400Schema,
+  getCommentLikesPreview401Schema,
+  getCommentLikesPreview404Schema,
+  getCommentLikesPreview500Schema,
+  getCommentLikesPreviewPathParamsSchema,
+  getCommentLikesPreviewQueryResponseSchema,
+} from './zod/getCommentLikesPreviewSchema.ts'
+export {
   getCurrentUser200Schema,
   getCurrentUser401Schema,
   getCurrentUser404Schema,
@@ -737,6 +853,15 @@ export {
   getHealthQueryResponseSchema,
 } from './zod/getHealthSchema.ts'
 export {
+  getPostLikesPreview200Schema,
+  getPostLikesPreview400Schema,
+  getPostLikesPreview401Schema,
+  getPostLikesPreview404Schema,
+  getPostLikesPreview500Schema,
+  getPostLikesPreviewPathParamsSchema,
+  getPostLikesPreviewQueryResponseSchema,
+} from './zod/getPostLikesPreviewSchema.ts'
+export {
   getPost200Schema,
   getPost400Schema,
   getPost401Schema,
@@ -759,6 +884,26 @@ export {
   getUserPathParamsSchema,
   getUserQueryResponseSchema,
 } from './zod/getUserSchema.ts'
+export {
+  likeComment200Schema,
+  likeComment400Schema,
+  likeComment401Schema,
+  likeComment404Schema,
+  likeComment500Schema,
+  likeCommentMutationResponseSchema,
+  likeCommentPathParamsSchema,
+} from './zod/likeCommentSchema.ts'
+export {
+  likePost200Schema,
+  likePost400Schema,
+  likePost401Schema,
+  likePost404Schema,
+  likePost500Schema,
+  likePostMutationResponseSchema,
+  likePostPathParamsSchema,
+} from './zod/likePostSchema.ts'
+export { likeStateSchema } from './zod/likeStateSchema.ts'
+export { likesPreviewSchema } from './zod/likesPreviewSchema.ts'
 export {
   listCommentReplies200Schema,
   listCommentReplies400Schema,
@@ -835,6 +980,7 @@ export {
   logout500Schema,
   logoutMutationResponseSchema,
 } from './zod/logoutSchema.ts'
+export { postCountersSchema } from './zod/postCountersSchema.ts'
 export { postImageSchema } from './zod/postImageSchema.ts'
 export { postSchema } from './zod/postSchema.ts'
 export { presignAvatarBodySchema } from './zod/presignAvatarBodySchema.ts'
@@ -861,6 +1007,7 @@ export {
   presignPostUploadsMutationRequestSchema,
   presignPostUploadsMutationResponseSchema,
 } from './zod/presignPostUploadsSchema.ts'
+export { reactionUserSummarySchema } from './zod/reactionUserSummarySchema.ts'
 export { refreshResultSchema } from './zod/refreshResultSchema.ts'
 export {
   refresh200Schema,
@@ -888,6 +1035,24 @@ export {
   signupMutationRequestSchema,
   signupMutationResponseSchema,
 } from './zod/signupSchema.ts'
+export {
+  unlikeComment200Schema,
+  unlikeComment400Schema,
+  unlikeComment401Schema,
+  unlikeComment404Schema,
+  unlikeComment500Schema,
+  unlikeCommentMutationResponseSchema,
+  unlikeCommentPathParamsSchema,
+} from './zod/unlikeCommentSchema.ts'
+export {
+  unlikePost200Schema,
+  unlikePost400Schema,
+  unlikePost401Schema,
+  unlikePost404Schema,
+  unlikePost500Schema,
+  unlikePostMutationResponseSchema,
+  unlikePostPathParamsSchema,
+} from './zod/unlikePostSchema.ts'
 export { updateCommentBodySchema } from './zod/updateCommentBodySchema.ts'
 export {
   updateComment200Schema,
@@ -926,3 +1091,4 @@ export {
 export { updateVisibilityBodySchema } from './zod/updateVisibilityBodySchema.ts'
 export { userSchema } from './zod/userSchema.ts'
 export { userSummarySchema } from './zod/userSummarySchema.ts'
+export { viewerLikeStateSchema } from './zod/viewerLikeStateSchema.ts'

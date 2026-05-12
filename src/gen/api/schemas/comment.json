@@ -36,8 +36,49 @@
       "x-readme-ref-name": "CommentAuthor"
     },
     "content": { "type": "string" },
-    "likeCount": { "type": "integer", "minimum": 0 },
-    "replyCount": { "type": "integer", "minimum": 0 },
+    "counters": {
+      "type": "object",
+      "properties": {
+        "likes": { "type": "integer", "minimum": 0 },
+        "replies": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["likes", "replies"],
+      "x-readme-ref-name": "CommentCounters"
+    },
+    "viewerState": {
+      "type": "object",
+      "properties": { "liked": { "type": "boolean" } },
+      "required": ["liked"],
+      "x-readme-ref-name": "CommentViewerState"
+    },
+    "likesPreview": {
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "preview": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "UUID identifier",
+                "example": "123e4567-e89b-12d3-a456-426614174000"
+              },
+              "firstName": { "type": "string" },
+              "lastName": { "type": "string" },
+              "avatarUrl": { "type": ["string", "null"], "format": "uri" }
+            },
+            "required": ["id", "firstName", "lastName", "avatarUrl"],
+            "x-readme-ref-name": "ReactionUserSummary"
+          },
+          "maxItems": 5
+        }
+      },
+      "required": ["count", "preview"],
+      "x-readme-ref-name": "LikesPreview"
+    },
     "isEdited": { "type": "boolean" },
     "createdAt": {
       "type": "string",
@@ -58,8 +99,9 @@
     "parentCommentId",
     "author",
     "content",
-    "likeCount",
-    "replyCount",
+    "counters",
+    "viewerState",
+    "likesPreview",
     "isEdited",
     "createdAt",
     "updatedAt"

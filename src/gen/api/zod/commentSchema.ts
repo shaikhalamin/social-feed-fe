@@ -4,6 +4,9 @@
  */
 
 import { commentAuthorSchema } from './commentAuthorSchema.ts'
+import { commentCountersSchema } from './commentCountersSchema.ts'
+import { commentViewerStateSchema } from './commentViewerStateSchema.ts'
+import { likesPreviewSchema } from './likesPreviewSchema.ts'
 import { z } from 'zod/v4'
 
 export const commentSchema = z.object({
@@ -14,8 +17,15 @@ export const commentSchema = z.object({
     return commentAuthorSchema
   },
   content: z.string(),
-  likeCount: z.int().min(0),
-  replyCount: z.int().min(0),
+  get counters() {
+    return commentCountersSchema
+  },
+  get viewerState() {
+    return commentViewerStateSchema
+  },
+  get likesPreview() {
+    return likesPreviewSchema
+  },
   isEdited: z.boolean(),
   createdAt: z.iso.datetime().describe('ISO 8601 timestamp'),
   updatedAt: z.iso.datetime().describe('ISO 8601 timestamp'),

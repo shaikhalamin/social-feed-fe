@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "liked": { "type": "boolean" },
+    "count": { "type": "integer", "minimum": 0 }
+  },
+  "required": ["liked", "count"],
+  "x-readme-ref-name": "LikeState"
+}

@@ -4,6 +4,9 @@
  */
 
 import type { CommentAuthor } from './CommentAuthor.ts'
+import type { CommentCounters } from './CommentCounters.ts'
+import type { CommentViewerState } from './CommentViewerState.ts'
+import type { LikesPreview } from './LikesPreview.ts'
 
 export type Comment = {
   /**
@@ -30,15 +33,17 @@ export type Comment = {
    */
   content: string
   /**
-   * @minLength 0
-   * @type integer
+   * @type object
    */
-  likeCount: number
+  counters: CommentCounters
   /**
-   * @minLength 0
-   * @type integer
+   * @type object
    */
-  replyCount: number
+  viewerState: CommentViewerState
+  /**
+   * @type object
+   */
+  likesPreview: LikesPreview
   /**
    * @type boolean
    */
