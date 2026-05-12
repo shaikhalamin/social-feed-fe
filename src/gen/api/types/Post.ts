@@ -4,7 +4,10 @@
  */
 
 import type { AuthorSummary } from './AuthorSummary.ts'
+import type { LikesPreview } from './LikesPreview.ts'
+import type { PostCounters } from './PostCounters.ts'
 import type { PostImage } from './PostImage.ts'
+import type { ViewerLikeState } from './ViewerLikeState.ts'
 
 export const postVisibilityEnum = {
   public: 'public',
@@ -36,6 +39,18 @@ export type Post = {
    * @type array
    */
   images: PostImage[]
+  /**
+   * @type object
+   */
+  counters: PostCounters
+  /**
+   * @type object
+   */
+  viewerState: ViewerLikeState
+  /**
+   * @type object
+   */
+  likesPreview: LikesPreview
   /**
    * @description ISO 8601 timestamp
    * @type string, date-time

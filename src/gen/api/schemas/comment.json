@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "postId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "parentCommentId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID identifier",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "avatarUrl": { "type": ["string", "null"], "format": "uri" }
+      },
+      "required": ["id", "firstName", "lastName", "avatarUrl"],
+      "x-readme-ref-name": "CommentAuthor"
+    },
+    "content": { "type": "string" },
+    "counters": {
+      "type": "object",
+      "properties": {
+        "likes": { "type": "integer", "minimum": 0 },
+        "replies": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["likes", "replies"],
+      "x-readme-ref-name": "CommentCounters"
+    },
+    "viewerState": {
+      "type": "object",
+      "properties": { "liked": { "type": "boolean" } },
+      "required": ["liked"],
+      "x-readme-ref-name": "CommentViewerState"
+    },
+    "likesPreview": {
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "preview": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "UUID identifier",
+                "example": "123e4567-e89b-12d3-a456-426614174000"
+              },
+              "firstName": { "type": "string" },
+              "lastName": { "type": "string" },
+              "avatarUrl": { "type": ["string", "null"], "format": "uri" }
+            },
+            "required": ["id", "firstName", "lastName", "avatarUrl"],
+            "x-readme-ref-name": "ReactionUserSummary"
+          },
+          "maxItems": 5
+        }
+      },
+      "required": ["count", "preview"],
+      "x-readme-ref-name": "LikesPreview"
+    },
+    "isEdited": { "type": "boolean" },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    }
+  },
+  "required": [
+    "id",
+    "postId",
+    "parentCommentId",
+    "author",
+    "content",
+    "counters",
+    "viewerState",
+    "likesPreview",
+    "isEdited",
+    "createdAt",
+    "updatedAt"
+  ],
+  "x-readme-ref-name": "Comment"
+}

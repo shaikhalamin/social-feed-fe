@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router"
 import { useAuthStore } from "@/hooks/use-auth"
 import { safeRedirectPath } from "@/lib/auth-redirect"
+import { AuthLayout } from "@/components/auth/AuthLayout"
 
 export const Route = createFileRoute("/auth")({
   beforeLoad: ({ search }) => {
@@ -14,15 +15,13 @@ export const Route = createFileRoute("/auth")({
     if (target) throw redirect({ to: target })
     throw redirect({ to: "/" })
   },
-  component: AuthLayout,
+  component: AuthLayoutRoute,
 })
 
-function AuthLayout() {
+function AuthLayoutRoute() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50">
-      <div className="w-full max-w-md p-6">
-        <Outlet />
-      </div>
-    </div>
+    <AuthLayout>
+      <Outlet />
+    </AuthLayout>
   )
 }

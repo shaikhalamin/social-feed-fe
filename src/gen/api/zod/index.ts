@@ -9,6 +9,10 @@ export {
 } from './acceptFriendRequestSchema.ts'
 export { authSessionSchema } from './authSessionSchema.ts'
 export { authorSummarySchema } from './authorSummarySchema.ts'
+export { commentAuthorSchema } from './commentAuthorSchema.ts'
+export { commentCountersSchema } from './commentCountersSchema.ts'
+export { commentSchema } from './commentSchema.ts'
+export { commentViewerStateSchema } from './commentViewerStateSchema.ts'
 export { commitAvatarBodySchema } from './commitAvatarBodySchema.ts'
 export {
   commitAvatar200Schema,
@@ -22,6 +26,28 @@ export {
   commitAvatarMutationResponseSchema,
   commitAvatarPathParamsSchema,
 } from './commitAvatarSchema.ts'
+export { createCommentBodySchema } from './createCommentBodySchema.ts'
+export {
+  createCommentReply201Schema,
+  createCommentReply400Schema,
+  createCommentReply401Schema,
+  createCommentReply404Schema,
+  createCommentReply422Schema,
+  createCommentReply500Schema,
+  createCommentReplyMutationRequestSchema,
+  createCommentReplyMutationResponseSchema,
+  createCommentReplyPathParamsSchema,
+} from './createCommentReplySchema.ts'
+export {
+  createComment201Schema,
+  createComment400Schema,
+  createComment401Schema,
+  createComment404Schema,
+  createComment500Schema,
+  createCommentMutationRequestSchema,
+  createCommentMutationResponseSchema,
+  createCommentPathParamsSchema,
+} from './createCommentSchema.ts'
 export { createPostBodySchema } from './createPostBodySchema.ts'
 export {
   createPost201Schema,
@@ -31,6 +57,16 @@ export {
   createPostMutationRequestSchema,
   createPostMutationResponseSchema,
 } from './createPostSchema.ts'
+export {
+  deleteComment200Schema,
+  deleteComment400Schema,
+  deleteComment401Schema,
+  deleteComment403Schema,
+  deleteComment404Schema,
+  deleteComment500Schema,
+  deleteCommentMutationResponseSchema,
+  deleteCommentPathParamsSchema,
+} from './deleteCommentSchema.ts'
 export {
   deleteFriendRelationship200Schema,
   deleteFriendRelationship400Schema,
@@ -69,6 +105,15 @@ export {
   getCacheHealthQueryResponseSchema,
 } from './getCacheHealthSchema.ts'
 export {
+  getCommentLikesPreview200Schema,
+  getCommentLikesPreview400Schema,
+  getCommentLikesPreview401Schema,
+  getCommentLikesPreview404Schema,
+  getCommentLikesPreview500Schema,
+  getCommentLikesPreviewPathParamsSchema,
+  getCommentLikesPreviewQueryResponseSchema,
+} from './getCommentLikesPreviewSchema.ts'
+export {
   getCurrentUser200Schema,
   getCurrentUser401Schema,
   getCurrentUser404Schema,
@@ -95,6 +140,15 @@ export {
   getHealthQueryResponseSchema,
 } from './getHealthSchema.ts'
 export {
+  getPostLikesPreview200Schema,
+  getPostLikesPreview400Schema,
+  getPostLikesPreview401Schema,
+  getPostLikesPreview404Schema,
+  getPostLikesPreview500Schema,
+  getPostLikesPreviewPathParamsSchema,
+  getPostLikesPreviewQueryResponseSchema,
+} from './getPostLikesPreviewSchema.ts'
+export {
   getPost200Schema,
   getPost400Schema,
   getPost401Schema,
@@ -117,6 +171,46 @@ export {
   getUserPathParamsSchema,
   getUserQueryResponseSchema,
 } from './getUserSchema.ts'
+export {
+  likeComment200Schema,
+  likeComment400Schema,
+  likeComment401Schema,
+  likeComment404Schema,
+  likeComment500Schema,
+  likeCommentMutationResponseSchema,
+  likeCommentPathParamsSchema,
+} from './likeCommentSchema.ts'
+export {
+  likePost200Schema,
+  likePost400Schema,
+  likePost401Schema,
+  likePost404Schema,
+  likePost500Schema,
+  likePostMutationResponseSchema,
+  likePostPathParamsSchema,
+} from './likePostSchema.ts'
+export { likeStateSchema } from './likeStateSchema.ts'
+export { likesPreviewSchema } from './likesPreviewSchema.ts'
+export {
+  listCommentReplies200Schema,
+  listCommentReplies400Schema,
+  listCommentReplies401Schema,
+  listCommentReplies404Schema,
+  listCommentReplies500Schema,
+  listCommentRepliesPathParamsSchema,
+  listCommentRepliesQueryParamsSchema,
+  listCommentRepliesQueryResponseSchema,
+} from './listCommentRepliesSchema.ts'
+export {
+  listComments200Schema,
+  listComments400Schema,
+  listComments401Schema,
+  listComments404Schema,
+  listComments500Schema,
+  listCommentsPathParamsSchema,
+  listCommentsQueryParamsSchema,
+  listCommentsQueryResponseSchema,
+} from './listCommentsSchema.ts'
 export {
   listFriends200Schema,
   listFriends400Schema,
@@ -173,6 +267,7 @@ export {
   logout500Schema,
   logoutMutationResponseSchema,
 } from './logoutSchema.ts'
+export { postCountersSchema } from './postCountersSchema.ts'
 export { postImageSchema } from './postImageSchema.ts'
 export { postSchema } from './postSchema.ts'
 export { presignAvatarBodySchema } from './presignAvatarBodySchema.ts'
@@ -199,6 +294,7 @@ export {
   presignPostUploadsMutationRequestSchema,
   presignPostUploadsMutationResponseSchema,
 } from './presignPostUploadsSchema.ts'
+export { reactionUserSummarySchema } from './reactionUserSummarySchema.ts'
 export { refreshResultSchema } from './refreshResultSchema.ts'
 export {
   refresh200Schema,
@@ -227,6 +323,36 @@ export {
   signupMutationResponseSchema,
 } from './signupSchema.ts'
 export {
+  unlikeComment200Schema,
+  unlikeComment400Schema,
+  unlikeComment401Schema,
+  unlikeComment404Schema,
+  unlikeComment500Schema,
+  unlikeCommentMutationResponseSchema,
+  unlikeCommentPathParamsSchema,
+} from './unlikeCommentSchema.ts'
+export {
+  unlikePost200Schema,
+  unlikePost400Schema,
+  unlikePost401Schema,
+  unlikePost404Schema,
+  unlikePost500Schema,
+  unlikePostMutationResponseSchema,
+  unlikePostPathParamsSchema,
+} from './unlikePostSchema.ts'
+export { updateCommentBodySchema } from './updateCommentBodySchema.ts'
+export {
+  updateComment200Schema,
+  updateComment400Schema,
+  updateComment401Schema,
+  updateComment403Schema,
+  updateComment404Schema,
+  updateComment500Schema,
+  updateCommentMutationRequestSchema,
+  updateCommentMutationResponseSchema,
+  updateCommentPathParamsSchema,
+} from './updateCommentSchema.ts'
+export {
   updatePostVisibility200Schema,
   updatePostVisibility400Schema,
   updatePostVisibility401Schema,
@@ -252,3 +378,4 @@ export {
 export { updateVisibilityBodySchema } from './updateVisibilityBodySchema.ts'
 export { userSchema } from './userSchema.ts'
 export { userSummarySchema } from './userSummarySchema.ts'
+export { viewerLikeStateSchema } from './viewerLikeStateSchema.ts'

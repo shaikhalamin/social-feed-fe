@@ -1,16 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { AuthHero } from "@/components/auth/AuthHero"
+import { AuthCard } from "@/components/auth/AuthCard"
+import { BottomLink } from "@/components/auth/BottomLink"
+import { LoginForm } from "@/features/auth/login-form"
+
+type LoginSearch = { redirect?: string }
 
 export const Route = createFileRoute("/auth/login")({
+  validateSearch: (search): LoginSearch => ({
+    redirect:
+      typeof search.redirect === "string" ? search.redirect : undefined,
+  }),
   component: LoginPage,
 })
 
 function LoginPage() {
+  const { redirect: redirectParam } = Route.useSearch()
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
-      <h1 className="text-xl font-semibold">Log in</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Login form — coming in next phase.
-      </p>
-    </div>
+    <>
+      <AuthHero imageSrc="/auth/login.png" imageAlt="Sign in illustration" />
+      <AuthCard
+        eyebrow="Welcome back"
+        title="Login to your account"
+        googleLabel="Or sign-in with google"
+        footer={
+          <BottomLink
+            prompt="Don't have an account?"
+            linkText="Create New Account"
+            to="/auth/signup"
+          />
+        }
+      >
+        <LoginForm redirectParam={redirectParam} />
+      </AuthCard>
+    </>
   )
 }

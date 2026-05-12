@@ -4,7 +4,10 @@
  */
 
 import { authorSummarySchema } from './authorSummarySchema.ts'
+import { likesPreviewSchema } from './likesPreviewSchema.ts'
+import { postCountersSchema } from './postCountersSchema.ts'
 import { postImageSchema } from './postImageSchema.ts'
+import { viewerLikeStateSchema } from './viewerLikeStateSchema.ts'
 import { z } from 'zod/v4'
 
 export const postSchema = z.object({
@@ -16,6 +19,15 @@ export const postSchema = z.object({
   visibility: z.enum(['public', 'private']),
   get images() {
     return z.array(postImageSchema)
+  },
+  get counters() {
+    return postCountersSchema
+  },
+  get viewerState() {
+    return viewerLikeStateSchema
+  },
+  get likesPreview() {
+    return likesPreviewSchema
   },
   createdAt: z.iso.datetime().describe('ISO 8601 timestamp'),
   updatedAt: z.iso.datetime().describe('ISO 8601 timestamp'),
