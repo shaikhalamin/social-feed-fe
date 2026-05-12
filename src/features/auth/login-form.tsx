@@ -5,7 +5,7 @@ import { toast } from "sonner"
 import { loginBodySchema } from "@/gen/api/zod/loginBodySchema.ts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
+import { AuthRadioCheck } from "@/components/auth/AuthRadioCheck"
 import {
   FormField,
   FormItem,
@@ -71,7 +71,7 @@ export function LoginForm({ redirectParam }: Props) {
         if (mutation.isPending) return
         void form.handleSubmit()
       }}
-      className="space-y-4"
+      className="space-y-4 text-center [&_label]:justify-center sm:text-left sm:[&_label]:justify-start"
     >
       {topError ? (
         <div
@@ -122,11 +122,11 @@ export function LoginForm({ redirectParam }: Props) {
         )}
       </form.Field>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
         <form.Field name="rememberMe">
           {(field) => (
             <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Checkbox
+              <AuthRadioCheck
                 checked={field.state.value}
                 onCheckedChange={(v) =>
                   field.handleChange(v === "indeterminate" ? false : v)

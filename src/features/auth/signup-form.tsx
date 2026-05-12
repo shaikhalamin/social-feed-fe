@@ -5,7 +5,7 @@ import { z } from "zod/v4"
 import { signupBodySchema } from "@/gen/api/zod/signupBodySchema.ts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
+import { AuthRadioCheck } from "@/components/auth/AuthRadioCheck"
 import {
   FormField,
   FormItem,
@@ -90,7 +90,7 @@ export function SignupForm() {
         if (mutation.isPending) return
         void form.handleSubmit()
       }}
-      className="space-y-4"
+      className="space-y-4 text-center [&_label]:justify-center sm:text-left sm:[&_label]:justify-start"
     >
       <div className="grid grid-cols-2 gap-3">
         <form.Field name="firstName">
@@ -196,7 +196,7 @@ export function SignupForm() {
           <FormField field={field}>
             <FormItem>
               <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Checkbox
+                <AuthRadioCheck
                   checked={field.state.value}
                   onCheckedChange={(v) =>
                     field.handleChange(v === "indeterminate" ? false : v)
