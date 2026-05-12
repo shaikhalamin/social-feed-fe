@@ -1,6 +1,9 @@
 export type { AcceptFriendRequestMutationKey } from './hooks/useAcceptFriendRequest.ts'
 export type { CommitAvatarMutationKey } from './hooks/useCommitAvatar.ts'
+export type { CreateCommentMutationKey } from './hooks/useCreateComment.ts'
+export type { CreateCommentReplyMutationKey } from './hooks/useCreateCommentReply.ts'
 export type { CreatePostMutationKey } from './hooks/useCreatePost.ts'
+export type { DeleteCommentMutationKey } from './hooks/useDeleteComment.ts'
 export type { DeleteFriendRelationshipMutationKey } from './hooks/useDeleteFriendRelationship.ts'
 export type { DeletePostMutationKey } from './hooks/useDeletePost.ts'
 export type { DeleteUserMutationKey } from './hooks/useDeleteUser.ts'
@@ -20,6 +23,10 @@ export type { GetStorageHealthQueryKey } from './hooks/useGetStorageHealth.ts'
 export type { GetStorageHealthSuspenseQueryKey } from './hooks/useGetStorageHealthSuspense.ts'
 export type { GetUserQueryKey } from './hooks/useGetUser.ts'
 export type { GetUserSuspenseQueryKey } from './hooks/useGetUserSuspense.ts'
+export type { ListCommentRepliesQueryKey } from './hooks/useListCommentReplies.ts'
+export type { ListCommentRepliesSuspenseQueryKey } from './hooks/useListCommentRepliesSuspense.ts'
+export type { ListCommentsQueryKey } from './hooks/useListComments.ts'
+export type { ListCommentsSuspenseQueryKey } from './hooks/useListCommentsSuspense.ts'
 export type { ListFriendsQueryKey } from './hooks/useListFriends.ts'
 export type { ListFriendsSuspenseQueryKey } from './hooks/useListFriendsSuspense.ts'
 export type { ListIncomingFriendRequestsQueryKey } from './hooks/useListIncomingFriendRequests.ts'
@@ -37,6 +44,7 @@ export type { PresignPostUploadsMutationKey } from './hooks/usePresignPostUpload
 export type { RefreshMutationKey } from './hooks/useRefresh.ts'
 export type { SendFriendRequestMutationKey } from './hooks/useSendFriendRequest.ts'
 export type { SignupMutationKey } from './hooks/useSignup.ts'
+export type { UpdateCommentMutationKey } from './hooks/useUpdateComment.ts'
 export type { UpdatePostVisibilityMutationKey } from './hooks/useUpdatePostVisibility.ts'
 export type { UpdateUserMutationKey } from './hooks/useUpdateUser.ts'
 export type {
@@ -51,6 +59,8 @@ export type {
 } from './types/AcceptFriendRequest.ts'
 export type { AuthSession } from './types/AuthSession.ts'
 export type { AuthorSummary } from './types/AuthorSummary.ts'
+export type { Comment } from './types/Comment.ts'
+export type { CommentAuthor } from './types/CommentAuthor.ts'
 export type {
   CommitAvatar200,
   CommitAvatar400,
@@ -66,6 +76,30 @@ export type {
 } from './types/CommitAvatar.ts'
 export type { CommitAvatarBody } from './types/CommitAvatarBody.ts'
 export type {
+  CreateComment201,
+  CreateComment400,
+  CreateComment401,
+  CreateComment404,
+  CreateComment500,
+  CreateCommentMutation,
+  CreateCommentMutationRequest,
+  CreateCommentMutationResponse,
+  CreateCommentPathParams,
+} from './types/CreateComment.ts'
+export type { CreateCommentBody } from './types/CreateCommentBody.ts'
+export type {
+  CreateCommentReply201,
+  CreateCommentReply400,
+  CreateCommentReply401,
+  CreateCommentReply404,
+  CreateCommentReply422,
+  CreateCommentReply500,
+  CreateCommentReplyMutation,
+  CreateCommentReplyMutationRequest,
+  CreateCommentReplyMutationResponse,
+  CreateCommentReplyPathParams,
+} from './types/CreateCommentReply.ts'
+export type {
   CreatePost201,
   CreatePost400,
   CreatePost401,
@@ -78,6 +112,17 @@ export type {
   CreatePostBody,
   CreatePostBodyVisibilityEnumKey,
 } from './types/CreatePostBody.ts'
+export type {
+  DeleteComment200,
+  DeleteComment400,
+  DeleteComment401,
+  DeleteComment403,
+  DeleteComment404,
+  DeleteComment500,
+  DeleteCommentMutation,
+  DeleteCommentMutationResponse,
+  DeleteCommentPathParams,
+} from './types/DeleteComment.ts'
 export type {
   DeleteFriendRelationship200,
   DeleteFriendRelationship400,
@@ -176,6 +221,28 @@ export type {
   GetUserQuery,
   GetUserQueryResponse,
 } from './types/GetUser.ts'
+export type {
+  ListCommentReplies200,
+  ListCommentReplies400,
+  ListCommentReplies401,
+  ListCommentReplies404,
+  ListCommentReplies500,
+  ListCommentRepliesPathParams,
+  ListCommentRepliesQuery,
+  ListCommentRepliesQueryParams,
+  ListCommentRepliesQueryResponse,
+} from './types/ListCommentReplies.ts'
+export type {
+  ListComments200,
+  ListComments400,
+  ListComments401,
+  ListComments404,
+  ListComments500,
+  ListCommentsPathParams,
+  ListCommentsQuery,
+  ListCommentsQueryParams,
+  ListCommentsQueryResponse,
+} from './types/ListComments.ts'
 export type {
   ListFriends200,
   ListFriends400,
@@ -307,6 +374,19 @@ export type {
 } from './types/Signup.ts'
 export type { SignupBody } from './types/SignupBody.ts'
 export type {
+  UpdateComment200,
+  UpdateComment400,
+  UpdateComment401,
+  UpdateComment403,
+  UpdateComment404,
+  UpdateComment500,
+  UpdateCommentMutation,
+  UpdateCommentMutationRequest,
+  UpdateCommentMutationResponse,
+  UpdateCommentPathParams,
+} from './types/UpdateComment.ts'
+export type { UpdateCommentBody } from './types/UpdateCommentBody.ts'
+export type {
   UpdatePostVisibility200,
   UpdatePostVisibility400,
   UpdatePostVisibility401,
@@ -339,7 +419,10 @@ export type { User } from './types/User.ts'
 export type { UserSummary } from './types/UserSummary.ts'
 export { acceptFriendRequest } from './clients/acceptFriendRequest.ts'
 export { commitAvatar } from './clients/commitAvatar.ts'
+export { createComment } from './clients/createComment.ts'
+export { createCommentReply } from './clients/createCommentReply.ts'
 export { createPost } from './clients/createPost.ts'
+export { deleteComment } from './clients/deleteComment.ts'
 export { deleteFriendRelationship } from './clients/deleteFriendRelationship.ts'
 export { deletePost } from './clients/deletePost.ts'
 export { deleteUser } from './clients/deleteUser.ts'
@@ -351,6 +434,8 @@ export { getHealth } from './clients/getHealth.ts'
 export { getPost } from './clients/getPost.ts'
 export { getStorageHealth } from './clients/getStorageHealth.ts'
 export { getUser } from './clients/getUser.ts'
+export { listCommentReplies } from './clients/listCommentReplies.ts'
+export { listComments } from './clients/listComments.ts'
 export { listFriends } from './clients/listFriends.ts'
 export { listIncomingFriendRequests } from './clients/listIncomingFriendRequests.ts'
 export { listOutgoingFriendRequests } from './clients/listOutgoingFriendRequests.ts'
@@ -363,6 +448,7 @@ export { presignPostUploads } from './clients/presignPostUploads.ts'
 export { refresh } from './clients/refresh.ts'
 export { sendFriendRequest } from './clients/sendFriendRequest.ts'
 export { signup } from './clients/signup.ts'
+export { updateComment } from './clients/updateComment.ts'
 export { updatePostVisibility } from './clients/updatePostVisibility.ts'
 export { updateUser } from './clients/updateUser.ts'
 export { acceptFriendRequestMutationKey } from './hooks/useAcceptFriendRequest.ts'
@@ -371,9 +457,18 @@ export { useAcceptFriendRequest } from './hooks/useAcceptFriendRequest.ts'
 export { commitAvatarMutationKey } from './hooks/useCommitAvatar.ts'
 export { commitAvatarMutationOptions } from './hooks/useCommitAvatar.ts'
 export { useCommitAvatar } from './hooks/useCommitAvatar.ts'
+export { createCommentMutationKey } from './hooks/useCreateComment.ts'
+export { createCommentMutationOptions } from './hooks/useCreateComment.ts'
+export { useCreateComment } from './hooks/useCreateComment.ts'
+export { createCommentReplyMutationKey } from './hooks/useCreateCommentReply.ts'
+export { createCommentReplyMutationOptions } from './hooks/useCreateCommentReply.ts'
+export { useCreateCommentReply } from './hooks/useCreateCommentReply.ts'
 export { createPostMutationKey } from './hooks/useCreatePost.ts'
 export { createPostMutationOptions } from './hooks/useCreatePost.ts'
 export { useCreatePost } from './hooks/useCreatePost.ts'
+export { deleteCommentMutationKey } from './hooks/useDeleteComment.ts'
+export { deleteCommentMutationOptions } from './hooks/useDeleteComment.ts'
+export { useDeleteComment } from './hooks/useDeleteComment.ts'
 export { deleteFriendRelationshipMutationKey } from './hooks/useDeleteFriendRelationship.ts'
 export { deleteFriendRelationshipMutationOptions } from './hooks/useDeleteFriendRelationship.ts'
 export { useDeleteFriendRelationship } from './hooks/useDeleteFriendRelationship.ts'
@@ -431,6 +526,18 @@ export { useGetUser } from './hooks/useGetUser.ts'
 export { getUserSuspenseQueryKey } from './hooks/useGetUserSuspense.ts'
 export { getUserSuspenseQueryOptions } from './hooks/useGetUserSuspense.ts'
 export { useGetUserSuspense } from './hooks/useGetUserSuspense.ts'
+export { listCommentRepliesQueryKey } from './hooks/useListCommentReplies.ts'
+export { listCommentRepliesQueryOptions } from './hooks/useListCommentReplies.ts'
+export { useListCommentReplies } from './hooks/useListCommentReplies.ts'
+export { listCommentRepliesSuspenseQueryKey } from './hooks/useListCommentRepliesSuspense.ts'
+export { listCommentRepliesSuspenseQueryOptions } from './hooks/useListCommentRepliesSuspense.ts'
+export { useListCommentRepliesSuspense } from './hooks/useListCommentRepliesSuspense.ts'
+export { listCommentsQueryKey } from './hooks/useListComments.ts'
+export { listCommentsQueryOptions } from './hooks/useListComments.ts'
+export { useListComments } from './hooks/useListComments.ts'
+export { listCommentsSuspenseQueryKey } from './hooks/useListCommentsSuspense.ts'
+export { listCommentsSuspenseQueryOptions } from './hooks/useListCommentsSuspense.ts'
+export { useListCommentsSuspense } from './hooks/useListCommentsSuspense.ts'
 export { listFriendsQueryKey } from './hooks/useListFriends.ts'
 export { listFriendsQueryOptions } from './hooks/useListFriends.ts'
 export { useListFriends } from './hooks/useListFriends.ts'
@@ -482,6 +589,9 @@ export { useSendFriendRequest } from './hooks/useSendFriendRequest.ts'
 export { signupMutationKey } from './hooks/useSignup.ts'
 export { signupMutationOptions } from './hooks/useSignup.ts'
 export { useSignup } from './hooks/useSignup.ts'
+export { updateCommentMutationKey } from './hooks/useUpdateComment.ts'
+export { updateCommentMutationOptions } from './hooks/useUpdateComment.ts'
+export { useUpdateComment } from './hooks/useUpdateComment.ts'
 export { updatePostVisibilityMutationKey } from './hooks/useUpdatePostVisibility.ts'
 export { updatePostVisibilityMutationOptions } from './hooks/useUpdatePostVisibility.ts'
 export { useUpdatePostVisibility } from './hooks/useUpdatePostVisibility.ts'
@@ -507,6 +617,8 @@ export {
 } from './zod/acceptFriendRequestSchema.ts'
 export { authSessionSchema } from './zod/authSessionSchema.ts'
 export { authorSummarySchema } from './zod/authorSummarySchema.ts'
+export { commentAuthorSchema } from './zod/commentAuthorSchema.ts'
+export { commentSchema } from './zod/commentSchema.ts'
 export { commitAvatarBodySchema } from './zod/commitAvatarBodySchema.ts'
 export {
   commitAvatar200Schema,
@@ -520,6 +632,28 @@ export {
   commitAvatarMutationResponseSchema,
   commitAvatarPathParamsSchema,
 } from './zod/commitAvatarSchema.ts'
+export { createCommentBodySchema } from './zod/createCommentBodySchema.ts'
+export {
+  createCommentReply201Schema,
+  createCommentReply400Schema,
+  createCommentReply401Schema,
+  createCommentReply404Schema,
+  createCommentReply422Schema,
+  createCommentReply500Schema,
+  createCommentReplyMutationRequestSchema,
+  createCommentReplyMutationResponseSchema,
+  createCommentReplyPathParamsSchema,
+} from './zod/createCommentReplySchema.ts'
+export {
+  createComment201Schema,
+  createComment400Schema,
+  createComment401Schema,
+  createComment404Schema,
+  createComment500Schema,
+  createCommentMutationRequestSchema,
+  createCommentMutationResponseSchema,
+  createCommentPathParamsSchema,
+} from './zod/createCommentSchema.ts'
 export { createPostBodySchema } from './zod/createPostBodySchema.ts'
 export {
   createPost201Schema,
@@ -529,6 +663,16 @@ export {
   createPostMutationRequestSchema,
   createPostMutationResponseSchema,
 } from './zod/createPostSchema.ts'
+export {
+  deleteComment200Schema,
+  deleteComment400Schema,
+  deleteComment401Schema,
+  deleteComment403Schema,
+  deleteComment404Schema,
+  deleteComment500Schema,
+  deleteCommentMutationResponseSchema,
+  deleteCommentPathParamsSchema,
+} from './zod/deleteCommentSchema.ts'
 export {
   deleteFriendRelationship200Schema,
   deleteFriendRelationship400Schema,
@@ -615,6 +759,26 @@ export {
   getUserPathParamsSchema,
   getUserQueryResponseSchema,
 } from './zod/getUserSchema.ts'
+export {
+  listCommentReplies200Schema,
+  listCommentReplies400Schema,
+  listCommentReplies401Schema,
+  listCommentReplies404Schema,
+  listCommentReplies500Schema,
+  listCommentRepliesPathParamsSchema,
+  listCommentRepliesQueryParamsSchema,
+  listCommentRepliesQueryResponseSchema,
+} from './zod/listCommentRepliesSchema.ts'
+export {
+  listComments200Schema,
+  listComments400Schema,
+  listComments401Schema,
+  listComments404Schema,
+  listComments500Schema,
+  listCommentsPathParamsSchema,
+  listCommentsQueryParamsSchema,
+  listCommentsQueryResponseSchema,
+} from './zod/listCommentsSchema.ts'
 export {
   listFriends200Schema,
   listFriends400Schema,
@@ -724,6 +888,18 @@ export {
   signupMutationRequestSchema,
   signupMutationResponseSchema,
 } from './zod/signupSchema.ts'
+export { updateCommentBodySchema } from './zod/updateCommentBodySchema.ts'
+export {
+  updateComment200Schema,
+  updateComment400Schema,
+  updateComment401Schema,
+  updateComment403Schema,
+  updateComment404Schema,
+  updateComment500Schema,
+  updateCommentMutationRequestSchema,
+  updateCommentMutationResponseSchema,
+  updateCommentPathParamsSchema,
+} from './zod/updateCommentSchema.ts'
 export {
   updatePostVisibility200Schema,
   updatePostVisibility400Schema,

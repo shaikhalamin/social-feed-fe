@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "postId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "parentCommentId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "UUID identifier",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID identifier",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "avatarUrl": { "type": ["string", "null"], "format": "uri" }
+      },
+      "required": ["id", "firstName", "lastName", "avatarUrl"],
+      "x-readme-ref-name": "CommentAuthor"
+    },
+    "content": { "type": "string" },
+    "likeCount": { "type": "integer", "minimum": 0 },
+    "replyCount": { "type": "integer", "minimum": 0 },
+    "isEdited": { "type": "boolean" },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp",
+      "example": "2026-05-10T10:30:00.000Z"
+    }
+  },
+  "required": [
+    "id",
+    "postId",
+    "parentCommentId",
+    "author",
+    "content",
+    "likeCount",
+    "replyCount",
+    "isEdited",
+    "createdAt",
+    "updatedAt"
+  ],
+  "x-readme-ref-name": "Comment"
+}

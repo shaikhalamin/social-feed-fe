@@ -10,6 +10,8 @@ export type {
 } from './AcceptFriendRequest.ts'
 export type { AuthSession } from './AuthSession.ts'
 export type { AuthorSummary } from './AuthorSummary.ts'
+export type { Comment } from './Comment.ts'
+export type { CommentAuthor } from './CommentAuthor.ts'
 export type {
   CommitAvatar200,
   CommitAvatar400,
@@ -25,6 +27,30 @@ export type {
 } from './CommitAvatar.ts'
 export type { CommitAvatarBody } from './CommitAvatarBody.ts'
 export type {
+  CreateComment201,
+  CreateComment400,
+  CreateComment401,
+  CreateComment404,
+  CreateComment500,
+  CreateCommentMutation,
+  CreateCommentMutationRequest,
+  CreateCommentMutationResponse,
+  CreateCommentPathParams,
+} from './CreateComment.ts'
+export type { CreateCommentBody } from './CreateCommentBody.ts'
+export type {
+  CreateCommentReply201,
+  CreateCommentReply400,
+  CreateCommentReply401,
+  CreateCommentReply404,
+  CreateCommentReply422,
+  CreateCommentReply500,
+  CreateCommentReplyMutation,
+  CreateCommentReplyMutationRequest,
+  CreateCommentReplyMutationResponse,
+  CreateCommentReplyPathParams,
+} from './CreateCommentReply.ts'
+export type {
   CreatePost201,
   CreatePost400,
   CreatePost401,
@@ -37,6 +63,17 @@ export type {
   CreatePostBody,
   CreatePostBodyVisibilityEnumKey,
 } from './CreatePostBody.ts'
+export type {
+  DeleteComment200,
+  DeleteComment400,
+  DeleteComment401,
+  DeleteComment403,
+  DeleteComment404,
+  DeleteComment500,
+  DeleteCommentMutation,
+  DeleteCommentMutationResponse,
+  DeleteCommentPathParams,
+} from './DeleteComment.ts'
 export type {
   DeleteFriendRelationship200,
   DeleteFriendRelationship400,
@@ -135,6 +172,28 @@ export type {
   GetUserQuery,
   GetUserQueryResponse,
 } from './GetUser.ts'
+export type {
+  ListCommentReplies200,
+  ListCommentReplies400,
+  ListCommentReplies401,
+  ListCommentReplies404,
+  ListCommentReplies500,
+  ListCommentRepliesPathParams,
+  ListCommentRepliesQuery,
+  ListCommentRepliesQueryParams,
+  ListCommentRepliesQueryResponse,
+} from './ListCommentReplies.ts'
+export type {
+  ListComments200,
+  ListComments400,
+  ListComments401,
+  ListComments404,
+  ListComments500,
+  ListCommentsPathParams,
+  ListCommentsQuery,
+  ListCommentsQueryParams,
+  ListCommentsQueryResponse,
+} from './ListComments.ts'
 export type {
   ListFriends200,
   ListFriends400,
@@ -265,6 +324,19 @@ export type {
   SignupMutationResponse,
 } from './Signup.ts'
 export type { SignupBody } from './SignupBody.ts'
+export type {
+  UpdateComment200,
+  UpdateComment400,
+  UpdateComment401,
+  UpdateComment403,
+  UpdateComment404,
+  UpdateComment500,
+  UpdateCommentMutation,
+  UpdateCommentMutationRequest,
+  UpdateCommentMutationResponse,
+  UpdateCommentPathParams,
+} from './UpdateComment.ts'
+export type { UpdateCommentBody } from './UpdateCommentBody.ts'
 export type {
   UpdatePostVisibility200,
   UpdatePostVisibility400,
