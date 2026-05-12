@@ -5,7 +5,7 @@ import { GoogleAuthButton } from "./GoogleAuthButton"
 type Props = {
   eyebrow: string
   title: string
-  googleLabel: string
+  googleLabel?: string
   children: ReactNode
   footer: ReactNode
 }
@@ -19,8 +19,12 @@ export function AuthCard({ eyebrow, title, googleLabel, children, footer }: Prop
         <h1 className="mb-10 text-center text-[28px] font-semibold leading-tight text-foreground sm:mb-12">
           {title}
         </h1>
-        <GoogleAuthButton label={googleLabel} />
-        <AuthDivider />
+        {googleLabel ? (
+          <>
+            <GoogleAuthButton label={googleLabel} />
+            <AuthDivider />
+          </>
+        ) : null}
         {children}
         <div className="mt-10 text-center">{footer}</div>
       </div>

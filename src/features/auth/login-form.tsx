@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useForm } from "@tanstack/react-form"
 import { Loader2 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { loginBodySchema } from "@/gen/api/zod/loginBodySchema.ts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

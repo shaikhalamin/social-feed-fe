@@ -18,7 +18,6 @@ function SignupPage() {
       <AuthCard
         eyebrow="Get Started Now"
         title="Registration"
-        googleLabel="Register with google"
         footer={
           <BottomLink
             prompt="Already have an account?"

@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form"
 import { Loader2 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { z } from "zod/v4"
 import { signupBodySchema } from "@/gen/api/zod/signupBodySchema.ts"
 import { Button } from "@/components/ui/button"
@@ -92,44 +92,43 @@ export function SignupForm() {
       }}
       className="space-y-4 text-center [&_label]:justify-center sm:text-left sm:[&_label]:justify-start"
     >
-      <div className="grid grid-cols-2 gap-3">
-        <form.Field name="firstName">
-          {(field) => (
-            <FormField field={field}>
-              <FormItem>
-                <FormLabel>First name</FormLabel>
-                <FormControl>
-                  <Input
-                    autoComplete="given-name"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-          )}
-        </form.Field>
-        <form.Field name="lastName">
-          {(field) => (
-            <FormField field={field}>
-              <FormItem>
-                <FormLabel>Last name</FormLabel>
-                <FormControl>
-                  <Input
-                    autoComplete="family-name"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-          )}
-        </form.Field>
-      </div>
+      <form.Field name="firstName">
+        {(field) => (
+          <FormField field={field}>
+            <FormItem>
+              <FormLabel>First name</FormLabel>
+              <FormControl>
+                <Input
+                  autoComplete="given-name"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
+        )}
+      </form.Field>
+
+      <form.Field name="lastName">
+        {(field) => (
+          <FormField field={field}>
+            <FormItem>
+              <FormLabel>Last name</FormLabel>
+              <FormControl>
+                <Input
+                  autoComplete="family-name"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
+        )}
+      </form.Field>
 
       <form.Field name="email">
         {(field) => (

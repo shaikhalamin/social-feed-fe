@@ -1,6 +1,9 @@
 import bareApiClient from "@/lib/kubb-clients/bare-api-client"
 import { refresh } from "@/gen/api/clients/refresh.ts"
 import { logout } from "@/gen/api/clients/logout.ts"
+import { router } from "@/lib/router"
+import { queryClient } from "@/lib/query-client"
+import { useAuthStore } from "@/hooks/use-auth"
 
 let accessToken: string | null = null
 let refreshPromise: Promise<boolean> | null = null
@@ -64,8 +67,8 @@ export async function logoutCurrentDevice(): Promise<void> {
   }
 
   clearAuth()
-  const { useAuthStore } = await import("@/hooks/use-auth")
   useAuthStore.getState().reset()
+  queryClient.clear()
   broadcastLogout()
-  window.location.href = "/auth/login"
+  await router.navigate({ to: "/auth/login" })
 }

@@ -22,7 +22,6 @@ function LoginPage() {
       <AuthCard
         eyebrow="Welcome back"
         title="Login to your account"
-        googleLabel="Or sign-in with google"
         footer={
           <BottomLink
             prompt="Don't have an account?"

@@ -1,6 +1,6 @@
 import { useState  } from "react"
 import type {FormEvent} from "react";
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { SearchIcon } from "@/components/shell/icons"
 
 export function SearchBar() {

@@ -1,4 +1,4 @@
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuthStore } from "@/hooks/use-auth"
 

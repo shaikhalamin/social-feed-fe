@@ -1,4 +1,4 @@
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { Separator } from "@/components/ui/separator"
 import { SAMPLE_EVENTS } from "@/data/sample-shell"
 

@@ -1,7 +1,9 @@
 import ky, { isNetworkError, isTimeoutError } from "ky"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { getAccessToken, tryRefreshToken, clearAuth } from "./auth"
 import { env } from "./env"
+import { router } from "./router"
+import { queryClient } from "./query-client"
 
 /**
  * Surface a toast only when the failure is something the user can act on —
@@ -50,8 +52,9 @@ export const api = ky.create({
             })
           }
           clearAuth()
+          queryClient.clear()
           toast.error("Session expired, please log in again.")
-          window.location.href = "/auth/login"
+          await router.navigate({ to: "/auth/login" })
         }
       },
     ],
