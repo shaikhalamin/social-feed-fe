@@ -9,8 +9,7 @@ import {
 export function HeaderNavLinks() {
   const matchRoute = useMatchRoute()
   const homeActive = Boolean(matchRoute({ to: "/", fuzzy: false }))
-  // TODO(Task 13): remove cast after route exists
-  const friendsActive = Boolean(matchRoute({ to: "/friend-requests" as any }))
+  const friendsActive = Boolean(matchRoute({ to: "/friend-requests" }))
 
   const base =
     "inline-flex size-10 items-center justify-center rounded-full text-foreground hover:bg-accent"
@@ -26,8 +25,7 @@ export function HeaderNavLinks() {
         <HomeIcon active={homeActive} />
       </Link>
       <Link
-        // TODO(Task 13): remove cast after route exists
-        to={"/friend-requests" as any}
+        to="/friend-requests"
         aria-label="Friend requests"
         className={`${base} ${friendsActive ? activeCls : ""}`}
       >
