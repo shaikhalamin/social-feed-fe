@@ -10,9 +10,10 @@ import {
   SettingsIcon,
 } from "@/components/shell/icons"
 import {
-  EXPLORE_LINKS,
-  type ExploreIconName,
+  EXPLORE_LINKS
+  
 } from "@/data/sample-shell"
+import type {ExploreIconName} from "@/data/sample-shell";
 
 const ICON_BY_NAME: Record<ExploreIconName, React.ComponentType<{ className?: string }>> = {
   learning: LearningIcon,

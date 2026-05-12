@@ -1,10 +1,11 @@
 import { create } from "zustand"
 import {
-  type Theme,
+  
   THEME_STORAGE_KEY,
   applyTheme,
-  readStoredTheme,
+  readStoredTheme
 } from "@/lib/theme"
+import type {Theme} from "@/lib/theme";
 
 type ThemeState = {
   theme: Theme

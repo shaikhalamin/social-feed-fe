@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from "react"
+import { useState  } from "react"
+import type {FormEvent} from "react";
 import { toast } from "sonner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"

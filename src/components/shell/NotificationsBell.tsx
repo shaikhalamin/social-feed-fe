@@ -8,9 +8,10 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { BellIcon } from "@/components/shell/icons"
 import {
-  SAMPLE_NOTIFICATIONS,
-  type SampleNotification,
+  SAMPLE_NOTIFICATIONS
+  
 } from "@/data/sample-shell"
+import type {SampleNotification} from "@/data/sample-shell";
 
 function NotificationRow({ row }: { row: SampleNotification }) {
   return (

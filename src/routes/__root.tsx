@@ -3,7 +3,7 @@ import {
   createRootRouteWithContext,
   Outlet,
 } from "@tanstack/react-router"
-import { type QueryClient } from "@tanstack/react-query"
+import type {QueryClient} from "@tanstack/react-query";
 import { toast } from "sonner"
 import { onAuthMessage, clearAuth } from "@/lib/auth"
 import { useAuthStore } from "@/hooks/use-auth"

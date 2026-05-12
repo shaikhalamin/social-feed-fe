@@ -5,7 +5,6 @@ import { SAMPLE_YOU_MIGHT_LIKE } from "@/data/sample-shell"
 
 export function YouMightLikeCard() {
   const person = SAMPLE_YOU_MIGHT_LIKE[0]
-  if (!person) return null
 
   return (
     <section className="rounded-lg bg-card p-6 shadow-sm">
