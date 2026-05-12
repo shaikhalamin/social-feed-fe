@@ -29,6 +29,14 @@ export const api = ky.create({
     afterResponse: [
       async (state) => {
         if (state.response.status === 401) {
+          const url = new URL(state.request.url)
+          if (
+            url.pathname.endsWith("/auth/login") ||
+            url.pathname.endsWith("/auth/signup") ||
+            url.pathname.endsWith("/auth/refresh")
+          ) {
+            return
+          }
           const refreshed = await tryRefreshToken()
           if (refreshed) {
             const token = getAccessToken()
