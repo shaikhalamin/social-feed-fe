@@ -10,7 +10,7 @@ const FALLBACK = "Something went wrong. Please try again."
 export function extractApiError(err: unknown): ExtractedError {
   if (err instanceof ApiError) {
     const body = err.body as { message?: string; error?: string } | null
-    const message = body?.message ?? body?.error ?? err.message ?? FALLBACK
+    const message = body?.message ?? body?.error ?? err.message
     return { status: err.status, message }
   }
   if (err instanceof Error && err.message) {
