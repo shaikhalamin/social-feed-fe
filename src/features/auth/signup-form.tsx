@@ -74,7 +74,6 @@ export function SignupForm() {
           form.setFieldMeta("email", (m) => ({
             ...m,
             errors: ["Email already in use"],
-            errorMap: { ...m.errorMap, onSubmit: "Email already in use" },
           }))
           toast.error(message)
         } else {
