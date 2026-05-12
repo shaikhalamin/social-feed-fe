@@ -1,4 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { AuthHero } from "@/components/auth/AuthHero"
+import { AuthCard } from "@/components/auth/AuthCard"
+import { BottomLink } from "@/components/auth/BottomLink"
+import { SignupForm } from "@/features/auth/signup-form"
 
 export const Route = createFileRoute("/auth/signup")({
   component: SignupPage,
@@ -6,11 +10,25 @@ export const Route = createFileRoute("/auth/signup")({
 
 function SignupPage() {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
-      <h1 className="text-xl font-semibold">Sign up</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Signup form — coming in next phase.
-      </p>
-    </div>
+    <>
+      <AuthHero
+        imageSrc="/auth/registration.png"
+        imageAlt="Registration illustration"
+      />
+      <AuthCard
+        eyebrow="Get Started Now"
+        title="Registration"
+        googleLabel="Register with google"
+        footer={
+          <BottomLink
+            prompt="Already have an account?"
+            linkText="Sign in"
+            to="/auth/login"
+          />
+        }
+      >
+        <SignupForm />
+      </AuthCard>
+    </>
   )
 }
