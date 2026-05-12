@@ -1,17 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { ComposerPlaceholder } from "@/components/shell/center-stubs/ComposerPlaceholder"
+import { FeedPlaceholder } from "@/components/shell/center-stubs/FeedPlaceholder"
+import { StoriesCarousel } from "@/components/shell/center-stubs/StoriesCarousel"
 
 export const Route = createFileRoute("/_app/")({
-  component: FeedPlaceholder,
+  component: AppIndex,
 })
 
-function FeedPlaceholder() {
+function AppIndex() {
   return (
-    <div className="rounded-lg border bg-white p-6">
-      <h1 className="text-xl font-semibold">Feed</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Feed coming soon — list rendering and infinite scroll arrive in the
-        next phase.
-      </p>
+    <div className="space-y-6">
+      <StoriesCarousel />
+      <ComposerPlaceholder />
+      <FeedPlaceholder />
     </div>
   )
 }
