@@ -33,7 +33,6 @@ export function PostImageGrid({ images }: Props) {
         )}
       >
         {ordered.map((img, i) => {
-          const isThreeFirst = ordered.length === 3 && i === 0
           return (
             <button
               key={img.url}
@@ -52,11 +51,7 @@ export function PostImageGrid({ images }: Props) {
               <img
                 src={img.url}
                 alt=""
-                className={cn(
-                  'size-full transition group-hover:scale-[1.02]',
-                  ordered.length === 1 ? 'object-cover' : 'object-cover',
-                  isThreeFirst && 'object-cover',
-                )}
+                className="size-full object-cover transition group-hover:scale-[1.02]"
               />
             </button>
           )

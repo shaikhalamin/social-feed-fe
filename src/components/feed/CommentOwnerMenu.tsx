@@ -17,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAuthStore } from '@/hooks/use-auth'
 import { useDeleteCommentMutation } from '@/features/feed/use-delete-comment'
 import type { Comment } from '@/gen/api/types/Comment.ts'
 
@@ -28,11 +27,8 @@ type Props = {
 }
 
 export function CommentOwnerMenu({ comment, postId, onEdit }: Props) {
-  const currentUserId = useAuthStore((s) => s.user?.id ?? null)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const remove = useDeleteCommentMutation(postId)
-
-  if (currentUserId !== comment.author.id) return null
 
   return (
     <>

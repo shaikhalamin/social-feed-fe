@@ -23,6 +23,7 @@ function isAllowedContentType(
 export type ImageUploadStatus =
   | 'reading'
   | 'pending'
+  | 'presigning'
   | 'uploading'
   | 'done'
   | 'error'
@@ -127,6 +128,9 @@ export function useComposerImageUploads(): UseComposerImageUploads {
       const body: PresignBody = {
         count: slots.length,
         contentTypes: slots.map((s) => s.contentType),
+      }
+      for (const slot of slots) {
+        updateItem(slot.localId, { status: 'presigning' })
       }
       presign.mutate(
         { data: body },
@@ -272,6 +276,13 @@ export function useComposerImageUploads(): UseComposerImageUploads {
     (localId: string) => {
       const slot = itemsRef.current.find((it) => it.localId === localId)
       if (!slot || slot.status !== 'error') return
+      const nextStatus: ImageUploadStatus =
+        slot.width == null || slot.height == null ? 'reading' : 'pending'
+      itemsRef.current = itemsRef.current.map((it) =>
+        it.localId === localId
+          ? { ...it, status: nextStatus, error: undefined }
+          : it,
+      )
       if (slot.width == null || slot.height == null) {
         updateItem(localId, { status: 'reading', error: undefined })
         readImageDimensions(slot.file).then(
@@ -339,6 +350,7 @@ export function useComposerImageUploads(): UseComposerImageUploads {
         (it) =>
           it.status === 'reading' ||
           it.status === 'pending' ||
+          it.status === 'presigning' ||
           it.status === 'uploading',
       ),
     [items],

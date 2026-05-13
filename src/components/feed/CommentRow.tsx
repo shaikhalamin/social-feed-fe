@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { formatTimeAgo } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/hooks/use-auth'
 import { useUpdateCommentMutation } from '@/features/feed/use-update-comment'
 import type { Comment } from '@/gen/api/types/Comment.ts'
 import { CommentOwnerMenu } from './CommentOwnerMenu'
@@ -23,6 +24,8 @@ type Props = {
 export function CommentRow({ comment, postId, pending = false }: Props) {
   const fullName =
     `${comment.author.firstName} ${comment.author.lastName}`.trim()
+  const currentUserId = useAuthStore((s) => s.user?.id ?? null)
+  const isOwner = currentUserId === comment.author.id
   const [isEditing, setIsEditing] = useState(false)
   const [draft, setDraft] = useState(comment.content)
   const updateMutation = useUpdateCommentMutation(postId)
@@ -78,6 +81,7 @@ export function CommentRow({ comment, postId, pending = false }: Props) {
               onKeyDown={onTextareaKeyDown}
               autoFocus
               rows={2}
+              aria-label="Edit comment"
               className="w-full resize-none rounded-2xl bg-muted px-3 py-2 text-sm focus:outline-none"
             />
             <div className="flex gap-2">
@@ -111,7 +115,7 @@ export function CommentRow({ comment, postId, pending = false }: Props) {
           {comment.isEdited ? <span>· Edited</span> : null}
         </div>
       </div>
-      {!isEditing ? (
+      {isOwner && !isEditing ? (
         <CommentOwnerMenu
           comment={comment}
           postId={postId}

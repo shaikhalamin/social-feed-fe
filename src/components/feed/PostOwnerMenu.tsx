@@ -85,6 +85,7 @@ export function PostOwnerMenu({ post }: Props) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
+              variant="destructive"
               onClick={() => {
                 setConfirmOpen(false)
                 remove.mutate({ id: post.id })

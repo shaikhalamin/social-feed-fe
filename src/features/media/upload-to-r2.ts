@@ -15,27 +15,34 @@ export function uploadToR2(
     const xhr = new XMLHttpRequest()
     xhr.open('PUT', uploadUrl, true)
     xhr.setRequestHeader('Content-Type', contentType)
+    const onAbort = () => {
+      xhr.abort()
+    }
+    const cleanup = () => {
+      signal?.removeEventListener('abort', onAbort)
+    }
     if (onProgress) {
       xhr.upload.onprogress = (evt) => {
         if (evt.lengthComputable) onProgress(evt.loaded, evt.total)
       }
     }
     xhr.onload = () => {
+      cleanup()
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve()
         return
       }
       reject(new Error(`R2 upload failed: HTTP ${xhr.status}`))
     }
-    xhr.onerror = () => reject(new Error('R2 upload failed: network error'))
-    xhr.onabort = () => reject(new DOMException('Upload aborted', 'AbortError'))
-    const onAbort = () => {
-      xhr.abort()
+    xhr.onerror = () => {
+      cleanup()
+      reject(new Error('R2 upload failed: network error'))
     }
-    signal?.addEventListener('abort', onAbort, { once: true })
-    xhr.onloadend = () => {
-      signal?.removeEventListener('abort', onAbort)
+    xhr.onabort = () => {
+      cleanup()
+      reject(new DOMException('Upload aborted', 'AbortError'))
     }
+    signal?.addEventListener('abort', onAbort)
     xhr.send(file)
   })
 }

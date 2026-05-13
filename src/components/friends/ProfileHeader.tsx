@@ -165,7 +165,7 @@ export function ProfileHeader({ user }: Props) {
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
-          {isEditingName ? (
+          {isSelf && isEditingName ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <Input
                 value={firstNameDraft}

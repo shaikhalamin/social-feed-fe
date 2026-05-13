@@ -38,9 +38,9 @@ export function ComposerVisibilitySelector({
       <DropdownMenuContent align="start" className="w-44">
         <DropdownMenuRadioGroup
           value={value}
-          onValueChange={(v) =>
-            onChange(v === 'private' ? 'private' : 'public')
-          }
+          onValueChange={(v) => {
+            if (v === 'public' || v === 'private') onChange(v)
+          }}
         >
           <DropdownMenuRadioItem value="public">
             <Globe2 className="size-4" />
