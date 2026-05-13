@@ -1,10 +1,8 @@
-import { useMutationState } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { acceptFriendRequestMutationKey } from '@/gen/api/hooks/useAcceptFriendRequest.ts'
-import { deleteFriendRelationshipMutationKey } from '@/gen/api/hooks/useDeleteFriendRelationship.ts'
 import { useAcceptFriendRequest } from '@/features/friends/use-accept-friend-request'
 import { useDeleteFriendRelationship } from '@/features/friends/use-delete-friend-relationship'
+import { usePendingFriendshipMutationForUser } from '@/features/friends/use-pending-mutation-for-user'
 import type { FriendRequest } from '@/gen/api/types/FriendRequest.ts'
 import { PersonRow } from './PersonRow'
 
@@ -15,35 +13,10 @@ type Props = {
   kind: Kind
 }
 
-function pickUserId(context: unknown): string | undefined {
-  if (typeof context !== 'object' || context === null) return undefined
-  if (!('userId' in context)) return undefined
-  const val = context.userId
-  return typeof val === 'string' ? val : undefined
-}
-
-function usePendingForUser(userId: string): boolean {
-  const acceptPending = useMutationState({
-    filters: {
-      mutationKey: acceptFriendRequestMutationKey(),
-      status: 'pending',
-    },
-    select: (m) => pickUserId(m.state.context),
-  })
-  const deletePending = useMutationState({
-    filters: {
-      mutationKey: deleteFriendRelationshipMutationKey(),
-      status: 'pending',
-    },
-    select: (m) => pickUserId(m.state.context),
-  })
-  return acceptPending.includes(userId) || deletePending.includes(userId)
-}
-
 export function FriendRequestRow({ request, kind }: Props) {
   const accept = useAcceptFriendRequest()
   const remove = useDeleteFriendRelationship()
-  const isPending = usePendingForUser(request.user.id)
+  const isPending = usePendingFriendshipMutationForUser(request.user.id)
 
   const action =
     kind === 'incoming' ? (
@@ -61,9 +34,7 @@ export function FriendRequestRow({ request, kind }: Props) {
           size="sm"
           variant="outline"
           disabled={isPending}
-          onClick={() =>
-            remove.mutate({ user: request.user, mode: 'decline' })
-          }
+          onClick={() => remove.mutate({ user: request.user, mode: 'decline' })}
           className="h-8 px-3 text-xs"
         >
           Decline
@@ -74,9 +45,7 @@ export function FriendRequestRow({ request, kind }: Props) {
         size="sm"
         variant="outline"
         disabled={isPending}
-        onClick={() =>
-          remove.mutate({ user: request.user, mode: 'cancel' })
-        }
+        onClick={() => remove.mutate({ user: request.user, mode: 'cancel' })}
         className="h-8 px-3 text-xs"
       >
         {isPending ? <Loader2 className="size-3 animate-spin" /> : 'Cancel'}

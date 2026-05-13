@@ -1,58 +1,18 @@
-import { useMutationState } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { sendFriendRequestMutationKey } from '@/gen/api/hooks/useSendFriendRequest.ts'
-import { acceptFriendRequestMutationKey } from '@/gen/api/hooks/useAcceptFriendRequest.ts'
-import { deleteFriendRelationshipMutationKey } from '@/gen/api/hooks/useDeleteFriendRelationship.ts'
 import { useFriendshipStatus } from '@/features/friends/use-friendship-status'
 import { useSendFriendRequest } from '@/features/friends/use-send-friend-request'
 import { useAcceptFriendRequest } from '@/features/friends/use-accept-friend-request'
 import { useDeleteFriendRelationship } from '@/features/friends/use-delete-friend-relationship'
-import { cn } from '@/lib/utils'
+import { usePendingFriendshipMutationForUser } from '@/features/friends/use-pending-mutation-for-user'
 import type { User } from '@/gen/api/types/User.ts'
 import type { UserSummary } from '@/gen/api/types/UserSummary.ts'
 
-type Variant = 'primary' | 'inline' | 'ghost'
+type Variant = 'primary' | 'inline'
 
 type Props = {
   user: User | UserSummary
   variant?: Variant
-}
-
-function pickUserId(context: unknown): string | undefined {
-  if (typeof context !== 'object' || context === null) return undefined
-  if (!('userId' in context)) return undefined
-  const val = context.userId
-  return typeof val === 'string' ? val : undefined
-}
-
-function usePendingForUser(userId: string): boolean {
-  const sendPending = useMutationState({
-    filters: {
-      mutationKey: sendFriendRequestMutationKey(),
-      status: 'pending',
-    },
-    select: (m) => pickUserId(m.state.context),
-  })
-  const acceptPending = useMutationState({
-    filters: {
-      mutationKey: acceptFriendRequestMutationKey(),
-      status: 'pending',
-    },
-    select: (m) => pickUserId(m.state.context),
-  })
-  const deletePending = useMutationState({
-    filters: {
-      mutationKey: deleteFriendRelationshipMutationKey(),
-      status: 'pending',
-    },
-    select: (m) => pickUserId(m.state.context),
-  })
-  return (
-    sendPending.includes(userId) ||
-    acceptPending.includes(userId) ||
-    deletePending.includes(userId)
-  )
 }
 
 function toUserSummary(user: User | UserSummary): UserSummary {
@@ -69,7 +29,7 @@ export function FriendshipButton({ user, variant = 'primary' }: Props) {
   const send = useSendFriendRequest()
   const accept = useAcceptFriendRequest()
   const remove = useDeleteFriendRelationship()
-  const isPending = usePendingForUser(user.id)
+  const isPending = usePendingFriendshipMutationForUser(user.id)
   const summary = toUserSummary(user)
 
   if (state === 'self') return null
@@ -106,9 +66,7 @@ export function FriendshipButton({ user, variant = 'primary' }: Props) {
           size={sizeProp}
           variant="outline"
           disabled={isPending}
-          onClick={() =>
-            remove.mutate({ user: summary, mode: 'decline' })
-          }
+          onClick={() => remove.mutate({ user: summary, mode: 'decline' })}
           className={baseCls}
         >
           Decline
@@ -124,7 +82,7 @@ export function FriendshipButton({ user, variant = 'primary' }: Props) {
         variant="outline"
         disabled={isPending}
         onClick={() => remove.mutate({ user: summary, mode: 'cancel' })}
-        className={cn(baseCls)}
+        className={baseCls}
       >
         {isPending ? <Loader2 className="size-3 animate-spin" /> : 'Pending'}
       </Button>
@@ -135,7 +93,7 @@ export function FriendshipButton({ user, variant = 'primary' }: Props) {
     return (
       <Button
         size={sizeProp}
-        variant={variant === 'ghost' ? 'ghost' : 'outline'}
+        variant="outline"
         disabled={isPending}
         onClick={() => remove.mutate({ user: summary, mode: 'unfriend' })}
         className={baseCls}

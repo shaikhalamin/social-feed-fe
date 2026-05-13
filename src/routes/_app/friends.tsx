@@ -53,7 +53,7 @@ function FriendsPage() {
               key={f.user.id}
               user={f.user}
               profileLinkUserId={f.user.id}
-              action={<FriendshipButton user={f.user} variant="ghost" />}
+              action={<FriendshipButton user={f.user} variant="inline" />}
             />
           ))}
           {query.isFetchingNextPage ? (
