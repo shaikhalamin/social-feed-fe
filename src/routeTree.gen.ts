@@ -14,7 +14,9 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AppFriendsRouteImport } from './routes/_app/friends'
 import { Route as AppFriendRequestsRouteImport } from './routes/_app/friend-requests'
+import { Route as AppUsersUserIdRouteImport } from './routes/_app/users.$userId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -40,9 +42,19 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AppFriendsRoute = AppFriendsRouteImport.update({
+  id: '/friends',
+  path: '/friends',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFriendRequestsRoute = AppFriendRequestsRouteImport.update({
   id: '/friend-requests',
   path: '/friend-requests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppUsersUserIdRoute = AppUsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -50,38 +62,60 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/friend-requests': typeof AppFriendRequestsRoute
+  '/friends': typeof AppFriendsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/users/$userId': typeof AppUsersUserIdRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/friend-requests': typeof AppFriendRequestsRoute
+  '/friends': typeof AppFriendsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
+  '/users/$userId': typeof AppUsersUserIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/_app/friend-requests': typeof AppFriendRequestsRoute
+  '/_app/friends': typeof AppFriendsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/users/$userId': typeof AppUsersUserIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/friend-requests' | '/auth/login' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/friend-requests'
+    | '/friends'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/users/$userId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/friend-requests' | '/auth/login' | '/auth/signup' | '/'
+  to:
+    | '/auth'
+    | '/friend-requests'
+    | '/friends'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/'
+    | '/users/$userId'
   id:
     | '__root__'
     | '/_app'
     | '/auth'
     | '/_app/friend-requests'
+    | '/_app/friends'
     | '/auth/login'
     | '/auth/signup'
     | '/_app/'
+    | '/_app/users/$userId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_app/friends': {
+      id: '/_app/friends'
+      path: '/friends'
+      fullPath: '/friends'
+      preLoaderRoute: typeof AppFriendsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/friend-requests': {
       id: '/_app/friend-requests'
       path: '/friend-requests'
@@ -133,17 +174,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFriendRequestsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/users/$userId': {
+      id: '/_app/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof AppUsersUserIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppFriendRequestsRoute: typeof AppFriendRequestsRoute
+  AppFriendsRoute: typeof AppFriendsRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppUsersUserIdRoute: typeof AppUsersUserIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppFriendRequestsRoute: AppFriendRequestsRoute,
+  AppFriendsRoute: AppFriendsRoute,
   AppIndexRoute: AppIndexRoute,
+  AppUsersUserIdRoute: AppUsersUserIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
