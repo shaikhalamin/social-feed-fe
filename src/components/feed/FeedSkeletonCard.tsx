@@ -1,6 +1,11 @@
 export function FeedSkeletonCard() {
   return (
-    <div className="rounded-lg bg-card p-6 shadow-sm">
+    <div
+      role="status"
+      aria-busy="true"
+      aria-label="Loading post"
+      className="rounded-lg bg-card p-6 shadow-sm"
+    >
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <div className="size-10 animate-pulse rounded-full bg-muted" />

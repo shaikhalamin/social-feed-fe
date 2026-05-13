@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import type { InfiniteData } from '@tanstack/react-query'
 import { getFeed } from '@/gen/api/clients/getFeed.ts'
 import type { GetFeedQueryResponse } from '@/gen/api/types/GetFeed.ts'
 import type { Post } from '@/gen/api/types/Post.ts'
@@ -10,7 +11,7 @@ export function useFeed() {
   const query = useInfiniteQuery<
     GetFeedQueryResponse,
     Error,
-    { pages: GetFeedQueryResponse[]; pageParams: Array<string | undefined> },
+    InfiniteData<GetFeedQueryResponse, string | undefined>,
     typeof feedQueryKey,
     string | undefined
   >({

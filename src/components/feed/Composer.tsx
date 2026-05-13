@@ -79,6 +79,8 @@ export function Composer() {
           variant="primary"
           onClick={submit}
           disabled={!canSubmit}
+          aria-label={submitting ? 'Posting…' : 'Post'}
+          aria-busy={submitting}
         >
           {submitting ? <Loader2 className="size-4 animate-spin" /> : 'Post'}
         </Button>

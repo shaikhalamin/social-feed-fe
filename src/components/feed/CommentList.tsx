@@ -11,7 +11,8 @@ type Props = {
 
 function pickTempId(context: unknown): string | undefined {
   if (typeof context !== 'object' || context === null) return undefined
-  const val = (context as Record<string, unknown>).tempId
+  if (!('tempId' in context)) return undefined
+  const val = context.tempId
   return typeof val === 'string' ? val : undefined
 }
 
@@ -57,14 +58,13 @@ export function CommentList({ postId, commentCount }: Props) {
   }
 
   const remaining = Math.max(0, commentCount - query.comments.length)
-  const showLoadMore = query.hasNextPage && remaining > 0
 
   return (
     <div className="space-y-3">
       {query.comments.map((c) => (
         <CommentRow key={c.id} comment={c} pending={pendingIds.has(c.id)} />
       ))}
-      {showLoadMore ? (
+      {query.hasNextPage ? (
         <button
           type="button"
           onClick={() => void query.fetchNextPage()}
@@ -73,7 +73,9 @@ export function CommentList({ postId, commentCount }: Props) {
         >
           {query.isFetchingNextPage
             ? 'Loading…'
-            : `View ${remaining} more comment${remaining === 1 ? '' : 's'}`}
+            : remaining > 0
+              ? `View ${remaining} more comment${remaining === 1 ? '' : 's'}`
+              : 'View more comments'}
         </button>
       ) : null}
     </div>

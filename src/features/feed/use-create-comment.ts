@@ -91,7 +91,11 @@ function replaceCommentInFirstPage(
 export function useCreateCommentMutation(postId: string) {
   return useCreateComment<CommentContext>({
     mutation: {
-      onMutate: ({ data }) => {
+      onMutate: async ({ data }) => {
+        await Promise.all([
+          queryClient.cancelQueries({ queryKey: commentsQueryKey(postId) }),
+          queryClient.cancelQueries({ queryKey: feedQueryKey }),
+        ])
         const tempId = crypto.randomUUID()
         const tempComment = buildOptimisticComment(postId, data.content, tempId)
         const previousComments = queryClient.getQueryData<CommentsPages>(
@@ -103,10 +107,10 @@ export function useCreateCommentMutation(postId: string) {
             commentsQueryKey(postId),
             (pages) => prependCommentToPages(pages, tempComment),
           )
+          queryClient.setQueryData<FeedPages>(feedQueryKey, (pages) =>
+            bumpPostCommentCount(pages, postId, +1),
+          )
         }
-        queryClient.setQueryData<FeedPages>(feedQueryKey, (pages) =>
-          bumpPostCommentCount(pages, postId, +1),
-        )
         return { tempId, previousComments, previousFeed }
       },
       onError: (_err, _vars, context) => {

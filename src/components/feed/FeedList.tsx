@@ -74,8 +74,9 @@ export function FeedList() {
       {query.posts.map((p) => (
         <PostCard key={p.id} post={p} />
       ))}
-      {query.isFetchingNextPage ? <FeedSkeletonCard /> : null}
-      {query.isError ? (
+      {query.isFetchingNextPage ? (
+        <FeedSkeletonCard />
+      ) : query.isError ? (
         <div className="rounded-lg bg-card p-4 text-center shadow-sm">
           <button
             type="button"
@@ -85,8 +86,7 @@ export function FeedList() {
             Couldn&apos;t load more. Retry.
           </button>
         </div>
-      ) : null}
-      {!query.hasNextPage && !query.isFetchingNextPage ? (
+      ) : !query.hasNextPage ? (
         <p className="text-center text-xs text-muted-foreground">
           You&apos;re all caught up
         </p>
