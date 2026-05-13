@@ -8,6 +8,10 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { useUpdateCommentMutation } from '@/features/feed/use-update-comment'
 import type { Comment } from '@/gen/api/types/Comment.ts'
 import { CommentOwnerMenu } from './CommentOwnerMenu'
+import { CommentLikeButton } from './CommentLikeButton'
+import { CommentReplyButton } from './CommentReplyButton'
+import { CommentReplyComposer } from './CommentReplyComposer'
+import { CommentRepliesList } from './CommentRepliesList'
 
 function authorInitials(first: string, last: string): string {
   const f = first.trim().charAt(0)
@@ -19,15 +23,22 @@ type Props = {
   comment: Comment
   postId: string
   pending?: boolean
+  isReply?: boolean
 }
 
-export function CommentRow({ comment, postId, pending = false }: Props) {
+export function CommentRow({
+  comment,
+  postId,
+  pending = false,
+  isReply = false,
+}: Props) {
   const fullName =
     `${comment.author.firstName} ${comment.author.lastName}`.trim()
   const currentUserId = useAuthStore((s) => s.user?.id ?? null)
   const isOwner = currentUserId === comment.author.id
   const [isEditing, setIsEditing] = useState(false)
   const [draft, setDraft] = useState(comment.content)
+  const [replyOpen, setReplyOpen] = useState(false)
   const updateMutation = useUpdateCommentMutation(postId)
 
   const trimmed = draft.trim()
@@ -62,64 +73,90 @@ export function CommentRow({ comment, postId, pending = false }: Props) {
   }
 
   return (
-    <div className={cn('group flex gap-2', pending && 'opacity-70')}>
-      <Avatar size="sm">
-        <AvatarImage
-          src={comment.author.avatarUrl ?? undefined}
-          alt={fullName}
-        />
-        <AvatarFallback>
-          {authorInitials(comment.author.firstName, comment.author.lastName)}
-        </AvatarFallback>
-      </Avatar>
-      <div className="flex-1">
-        {isEditing ? (
-          <div className="space-y-2">
-            <textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={onTextareaKeyDown}
-              autoFocus
-              rows={2}
-              aria-label="Edit comment"
-              className="w-full resize-none rounded-2xl bg-muted px-3 py-2 text-sm focus:outline-none"
-            />
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="primary"
-                size="sm"
-                onClick={save}
-                disabled={!canSave || updateMutation.isPending}
-              >
-                Save
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={cancelEdit}
-              >
-                Cancel
-              </Button>
+    <div className={cn(isReply && 'pl-10')}>
+      <div className={cn('group flex gap-2', pending && 'opacity-70')}>
+        <Avatar size="sm">
+          <AvatarImage
+            src={comment.author.avatarUrl ?? undefined}
+            alt={fullName}
+          />
+          <AvatarFallback>
+            {authorInitials(comment.author.firstName, comment.author.lastName)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex-1">
+          {isEditing ? (
+            <div className="space-y-2">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={onTextareaKeyDown}
+                autoFocus
+                rows={2}
+                aria-label="Edit comment"
+                className="w-full resize-none rounded-2xl bg-muted px-3 py-2 text-sm focus:outline-none"
+              />
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="sm"
+                  onClick={save}
+                  disabled={!canSave || updateMutation.isPending}
+                >
+                  Save
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={cancelEdit}
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
+          ) : (
+            <div className="rounded-2xl bg-muted px-3 py-2">
+              <div className="text-sm font-semibold">{fullName}</div>
+              <div className="whitespace-pre-line text-sm">
+                {comment.content}
+              </div>
+            </div>
+          )}
+          <div className="mt-1 flex items-center gap-3 px-3 text-xs text-muted-foreground">
+            <span>{formatTimeAgo(comment.createdAt)}</span>
+            {comment.isEdited ? <span>· Edited</span> : null}
+            <CommentLikeButton comment={comment} postId={postId} />
+            {!isReply ? (
+              <CommentReplyButton
+                onClick={() => setReplyOpen(true)}
+                disabled={replyOpen}
+              />
+            ) : null}
           </div>
-        ) : (
-          <div className="rounded-2xl bg-muted px-3 py-2">
-            <div className="text-sm font-semibold">{fullName}</div>
-            <div className="whitespace-pre-line text-sm">{comment.content}</div>
-          </div>
-        )}
-        <div className="mt-1 flex items-center gap-2 px-3 text-xs text-muted-foreground">
-          <span>{formatTimeAgo(comment.createdAt)}</span>
-          {comment.isEdited ? <span>· Edited</span> : null}
         </div>
+        {isOwner && !isEditing ? (
+          <CommentOwnerMenu
+            comment={comment}
+            postId={postId}
+            onEdit={startEdit}
+          />
+        ) : null}
       </div>
-      {isOwner && !isEditing ? (
-        <CommentOwnerMenu
-          comment={comment}
+      {!isReply && replyOpen ? (
+        <CommentReplyComposer
           postId={postId}
-          onEdit={startEdit}
+          parentCommentId={comment.id}
+          onCancel={() => setReplyOpen(false)}
+          onSuccess={() => setReplyOpen(false)}
+        />
+      ) : null}
+      {!isReply ? (
+        <CommentRepliesList
+          postId={postId}
+          parentCommentId={comment.id}
+          replyCount={comment.counters.replies}
         />
       ) : null}
     </div>
