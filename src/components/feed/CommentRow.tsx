@@ -39,6 +39,7 @@ export function CommentRow({
   const [isEditing, setIsEditing] = useState(false)
   const [draft, setDraft] = useState(comment.content)
   const [replyOpen, setReplyOpen] = useState(false)
+  const [expandSignal, setExpandSignal] = useState(0)
   const updateMutation = useUpdateCommentMutation(postId)
 
   const trimmed = draft.trim()
@@ -150,6 +151,7 @@ export function CommentRow({
           parentCommentId={comment.id}
           onCancel={() => setReplyOpen(false)}
           onSuccess={() => setReplyOpen(false)}
+          onSubmit={() => setExpandSignal((s) => s + 1)}
         />
       ) : null}
       {!isReply ? (
@@ -157,6 +159,7 @@ export function CommentRow({
           postId={postId}
           parentCommentId={comment.id}
           replyCount={comment.counters.replies}
+          expandSignal={expandSignal}
         />
       ) : null}
     </div>

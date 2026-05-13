@@ -28,7 +28,6 @@ export function CommentLikeButton({ comment, postId }: Props) {
         )}
       >
         <Heart className={cn('size-3.5', liked && 'fill-red-500')} />
-        <span>Like</span>
       </button>
       {count > 0 ? (
         <LikesPreviewHoverCard

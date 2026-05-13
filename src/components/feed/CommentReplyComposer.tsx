@@ -8,6 +8,7 @@ type Props = {
   parentCommentId: string
   onCancel: () => void
   onSuccess: () => void
+  onSubmit?: () => void
 }
 
 export function CommentReplyComposer({
@@ -15,6 +16,7 @@ export function CommentReplyComposer({
   parentCommentId,
   onCancel,
   onSuccess,
+  onSubmit,
 }: Props) {
   const [content, setContent] = useState('')
   const mutation = useCreateCommentReplyMutation(postId, parentCommentId)
@@ -23,6 +25,7 @@ export function CommentReplyComposer({
 
   const submit = () => {
     if (!canSubmit) return
+    onSubmit?.()
     mutation.mutate(
       { comment_id: parentCommentId, data: { content: trimmed } },
       { onSuccess: () => onSuccess() },

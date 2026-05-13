@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ChevronDown, CornerDownRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useListCommentReplies } from '@/features/feed/use-list-comment-replies'
@@ -8,18 +8,24 @@ type Props = {
   postId: string
   parentCommentId: string
   replyCount: number
+  expandSignal?: number
 }
 
 export function CommentRepliesList({
   postId,
   parentCommentId,
   replyCount,
+  expandSignal = 0,
 }: Props) {
   const [expanded, setExpanded] = useState(false)
   const query = useListCommentReplies(
     { postId, parentCommentId },
     { enabled: expanded },
   )
+
+  useEffect(() => {
+    if (expandSignal > 0) setExpanded(true)
+  }, [expandSignal])
 
   const replies = query.replies
   const skeletonCount = useMemo(

@@ -8,7 +8,6 @@ import {
   bumpCommentReplyCount,
   cancelCommentCachesForPost,
   patchCommentInAllCaches,
-  patchCommentInList,
   prependReplyToPages,
   restoreCommentCaches,
 } from './feed-cache'
@@ -122,6 +121,3 @@ export function useCreateCommentReplyMutation(
     },
   })
 }
-
-// Re-export the local helper so other modules can compose against the key.
-export { patchCommentInList }
