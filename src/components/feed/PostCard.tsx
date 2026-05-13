@@ -32,7 +32,10 @@ export function PostCard({ post }: Props) {
     <article className="space-y-4 rounded-lg bg-card p-6 shadow-sm">
       <div className="flex items-center gap-3">
         <Avatar size="lg">
-          <AvatarImage src={post.author.avatarUrl ?? undefined} alt={fullName} />
+          <AvatarImage
+            src={post.author.avatarUrl ?? undefined}
+            alt={fullName}
+          />
           <AvatarFallback>
             {authorInitials(post.author.firstName, post.author.lastName)}
           </AvatarFallback>

@@ -43,7 +43,8 @@ export function Composer() {
         data: {
           content: trimmed,
           visibility,
-          images: uploads.postImages.length > 0 ? uploads.postImages : undefined,
+          images:
+            uploads.postImages.length > 0 ? uploads.postImages : undefined,
         },
       },
       {

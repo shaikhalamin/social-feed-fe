@@ -61,7 +61,10 @@ export function CommentRow({ comment, postId, pending = false }: Props) {
   return (
     <div className={cn('group flex gap-2', pending && 'opacity-70')}>
       <Avatar size="sm">
-        <AvatarImage src={comment.author.avatarUrl ?? undefined} alt={fullName} />
+        <AvatarImage
+          src={comment.author.avatarUrl ?? undefined}
+          alt={fullName}
+        />
         <AvatarFallback>
           {authorInitials(comment.author.firstName, comment.author.lastName)}
         </AvatarFallback>

@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import type { PostImage } from '@/gen/api/types/PostImage.ts'
 
 type Props = {

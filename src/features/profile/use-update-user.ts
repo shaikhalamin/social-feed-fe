@@ -21,8 +21,7 @@ export function useUpdateUserMutation() {
         const previousAuthUser = useAuthStore.getState().user
         const previousUserQuery =
           queryClient.getQueryData<GetUserQueryResponse>(key)
-        const isSelf =
-          previousAuthUser !== null && previousAuthUser.id === id
+        const isSelf = previousAuthUser !== null && previousAuthUser.id === id
         const nowIso = new Date().toISOString()
         if (isSelf) {
           useAuthStore.getState().setUser({
