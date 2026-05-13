@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react'
 import type { Post } from '@/gen/api/types/Post.ts'
+import { LikesPreviewHoverCard } from './LikesPreviewHoverCard'
 
 type Props = {
   post: Post
@@ -13,10 +14,16 @@ export function PostCardCounters({ post }: Props) {
     <div className="flex items-center justify-between text-xs text-muted-foreground">
       <div className="flex items-center gap-1">
         {likes > 0 ? (
-          <>
-            <Heart className="size-3.5 fill-red-500 text-red-500" />
-            <span>{likes}</span>
-          </>
+          <LikesPreviewHoverCard
+            kind="post"
+            id={post.id}
+            embedded={post.likesPreview}
+          >
+            <span className="inline-flex cursor-default items-center gap-1">
+              <Heart className="size-3.5 fill-red-500 text-red-500" />
+              <span>{likes}</span>
+            </span>
+          </LikesPreviewHoverCard>
         ) : null}
       </div>
       <div>
