@@ -6,9 +6,12 @@ import { useAuthStore } from '@/hooks/use-auth'
 import type { Comment } from '@/gen/api/types/Comment.ts'
 import type { ListCommentsQueryResponse } from '@/gen/api/types/ListComments.ts'
 import { commentsQueryKey } from './use-post-comments'
-import { feedQueryKey } from './use-feed'
-import type { FeedPages } from './feed-cache'
-import { bumpPostCommentCount } from './feed-cache'
+import type { PostListSnapshot } from './feed-cache'
+import {
+  patchAllPostListCaches,
+  restorePostListCaches,
+  snapshotPostListCaches,
+} from './feed-cache'
 
 type CommentsPages = InfiniteData<
   ListCommentsQueryResponse,
@@ -18,7 +21,7 @@ type CommentsPages = InfiniteData<
 type CommentContext = {
   tempId: string
   previousComments: CommentsPages | undefined
-  previousFeed: FeedPages | undefined
+  postListSnapshot: PostListSnapshot
 }
 
 const EMPTY_COMMENTS_PAGINATION: ListCommentsQueryResponse['pagination'] = {
@@ -92,26 +95,26 @@ export function useCreateCommentMutation(postId: string) {
   return useCreateComment<CommentContext>({
     mutation: {
       onMutate: async ({ data }) => {
-        await Promise.all([
-          queryClient.cancelQueries({ queryKey: commentsQueryKey(postId) }),
-          queryClient.cancelQueries({ queryKey: feedQueryKey }),
-        ])
+        await queryClient.cancelQueries({
+          queryKey: commentsQueryKey(postId),
+        })
         const tempId = crypto.randomUUID()
         const tempComment = buildOptimisticComment(postId, data.content, tempId)
         const previousComments = queryClient.getQueryData<CommentsPages>(
           commentsQueryKey(postId),
         )
-        const previousFeed = queryClient.getQueryData<FeedPages>(feedQueryKey)
+        const postListSnapshot = snapshotPostListCaches(queryClient)
         if (tempComment) {
           queryClient.setQueryData<CommentsPages>(
             commentsQueryKey(postId),
             (pages) => prependCommentToPages(pages, tempComment),
           )
-          queryClient.setQueryData<FeedPages>(feedQueryKey, (pages) =>
-            bumpPostCommentCount(pages, postId, +1),
-          )
+          patchAllPostListCaches(queryClient, postId, (p) => ({
+            ...p,
+            counters: { ...p.counters, comments: p.counters.comments + 1 },
+          }))
         }
-        return { tempId, previousComments, previousFeed }
+        return { tempId, previousComments, postListSnapshot }
       },
       onError: (_err, _vars, context) => {
         if (context) {
@@ -119,10 +122,7 @@ export function useCreateCommentMutation(postId: string) {
             commentsQueryKey(postId),
             context.previousComments,
           )
-          queryClient.setQueryData<FeedPages>(
-            feedQueryKey,
-            context.previousFeed,
-          )
+          restorePostListCaches(queryClient, context.postListSnapshot)
         }
         toast.error("Couldn't post comment")
       },

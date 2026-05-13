@@ -11,8 +11,8 @@ export type PostListResponse = {
   }
 }
 
-export type PostPages<R extends PostListResponse = PostListResponse> =
-  InfiniteData<R, string | undefined>
+export type PostPages<TResponse extends PostListResponse = PostListResponse> =
+  InfiniteData<TResponse, string | undefined>
 
 export type FeedPages = PostPages<GetFeedQueryResponse>
 
@@ -40,11 +40,11 @@ export function prependPostToFeed(
   return { ...pages, pages: [updatedFirst, ...rest] }
 }
 
-export function patchPostInPages<R extends PostListResponse>(
-  pages: PostPages<R> | undefined,
+export function patchPostInPages<TResponse extends PostListResponse>(
+  pages: PostPages<TResponse> | undefined,
   postId: string,
   patch: (p: Post) => Post,
-): PostPages<R> | undefined {
+): PostPages<TResponse> | undefined {
   if (!pages) return undefined
   const exists = pages.pages.some((page) =>
     page.data.some((p) => p.id === postId),
@@ -63,11 +63,11 @@ export function patchPostInPages<R extends PostListResponse>(
 // Backwards-compatible alias for the Phase C type / call sites.
 export const patchPostInFeed = patchPostInPages<GetFeedQueryResponse>
 
-export function bumpPostCommentCount<R extends PostListResponse>(
-  pages: PostPages<R> | undefined,
+export function bumpPostCommentCount<TResponse extends PostListResponse>(
+  pages: PostPages<TResponse> | undefined,
   postId: string,
   delta: number,
-): PostPages<R> | undefined {
+): PostPages<TResponse> | undefined {
   return patchPostInPages(pages, postId, (p) => ({
     ...p,
     counters: { ...p.counters, comments: p.counters.comments + delta },
