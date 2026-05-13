@@ -1,5 +1,7 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query'
+import type { Comment } from '@/gen/api/types/Comment.ts'
 import type { GetFeedQueryResponse } from '@/gen/api/types/GetFeed.ts'
+import type { ListCommentsQueryResponse } from '@/gen/api/types/ListComments.ts'
 import type { Post } from '@/gen/api/types/Post.ts'
 
 export type PostListResponse = {
@@ -117,4 +119,78 @@ export function restorePostListCaches(
   for (const [key, data] of snapshot) {
     queryClient.setQueryData<PostPages>(key, data)
   }
+}
+
+export function removePostFromPages<TResponse extends PostListResponse>(
+  pages: PostPages<TResponse> | undefined,
+  postId: string,
+): PostPages<TResponse> | undefined {
+  if (!pages) return undefined
+  const exists = pages.pages.some((page) =>
+    page.data.some((p) => p.id === postId),
+  )
+  if (!exists) return pages
+  const nextPages = pages.pages.map((page) =>
+    page.data.some((p) => p.id === postId)
+      ? { ...page, data: page.data.filter((p) => p.id !== postId) }
+      : page,
+  )
+  return { ...pages, pages: nextPages }
+}
+
+export function removePostFromAllPostListCaches(
+  queryClient: QueryClient,
+  postId: string,
+): void {
+  const queries = queryClient.getQueriesData<PostPages>({
+    predicate: (q) => isPostListQueryKey(q.queryKey),
+  })
+  for (const [key] of queries) {
+    queryClient.setQueryData<PostPages>(key, (pages) =>
+      removePostFromPages(pages, postId),
+    )
+  }
+}
+
+export type CommentPages = InfiniteData<
+  ListCommentsQueryResponse,
+  string | undefined
+>
+
+export function patchCommentInList(
+  pages: CommentPages | undefined,
+  commentId: string,
+  patch: (c: Comment) => Comment,
+): CommentPages | undefined {
+  if (!pages) return undefined
+  const exists = pages.pages.some((page) =>
+    page.data.some((c) => c.id === commentId),
+  )
+  if (!exists) return pages
+  const nextPages = pages.pages.map((page) =>
+    page.data.some((c) => c.id === commentId)
+      ? {
+          ...page,
+          data: page.data.map((c) => (c.id === commentId ? patch(c) : c)),
+        }
+      : page,
+  )
+  return { ...pages, pages: nextPages }
+}
+
+export function removeCommentFromList(
+  pages: CommentPages | undefined,
+  commentId: string,
+): CommentPages | undefined {
+  if (!pages) return undefined
+  const exists = pages.pages.some((page) =>
+    page.data.some((c) => c.id === commentId),
+  )
+  if (!exists) return pages
+  const nextPages = pages.pages.map((page) =>
+    page.data.some((c) => c.id === commentId)
+      ? { ...page, data: page.data.filter((c) => c.id !== commentId) }
+      : page,
+  )
+  return { ...pages, pages: nextPages }
 }
