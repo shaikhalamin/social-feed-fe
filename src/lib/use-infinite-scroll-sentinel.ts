@@ -12,6 +12,11 @@ export function useInfiniteScrollSentinel(
   query: QueryLike,
 ): RefObject<HTMLDivElement | null> {
   const sentinelRef = useRef<HTMLDivElement | null>(null)
+  const fetchNextPageRef = useRef(query.fetchNextPage)
+
+  useEffect(() => {
+    fetchNextPageRef.current = query.fetchNextPage
+  }, [query.fetchNextPage])
 
   useEffect(() => {
     const node = sentinelRef.current
@@ -24,17 +29,12 @@ export function useInfiniteScrollSentinel(
         !query.isFetchingNextPage &&
         !query.isFetching
       ) {
-        void query.fetchNextPage()
+        void fetchNextPageRef.current()
       }
     })
     observer.observe(node)
     return () => observer.disconnect()
-  }, [
-    query.hasNextPage,
-    query.isFetchingNextPage,
-    query.isFetching,
-    query.fetchNextPage,
-  ])
+  }, [query.hasNextPage, query.isFetchingNextPage, query.isFetching])
 
   return sentinelRef
 }
