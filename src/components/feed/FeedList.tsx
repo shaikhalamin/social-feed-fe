@@ -1,35 +1,12 @@
-import { useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { useFeed } from '@/features/feed/use-feed'
+import { useInfiniteScrollSentinel } from '@/lib/use-infinite-scroll-sentinel'
 import { FeedSkeletonCard } from './FeedSkeletonCard'
 import { PostCard } from './PostCard'
 
 export function FeedList() {
   const query = useFeed()
-  const sentinelRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const node = sentinelRef.current
-    if (!node) return
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0]
-      if (
-        entry.isIntersecting &&
-        query.hasNextPage &&
-        !query.isFetchingNextPage &&
-        !query.isFetching
-      ) {
-        void query.fetchNextPage()
-      }
-    })
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [
-    query.hasNextPage,
-    query.isFetchingNextPage,
-    query.isFetching,
-    query.fetchNextPage,
-  ])
+  const sentinelRef = useInfiniteScrollSentinel(query)
 
   if (query.isLoading) {
     return (
