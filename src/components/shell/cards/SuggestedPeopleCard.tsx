@@ -1,43 +1,51 @@
-import { toast } from "@/components/ui/sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { SAMPLE_SUGGESTED_PEOPLE } from "@/data/sample-shell"
+import { toast } from '@/components/ui/sonner'
+import { FriendsSkeletonRow } from '@/components/friends/FriendsSkeletonRow'
+import { FriendshipButton } from '@/components/friends/FriendshipButton'
+import { PersonRow } from '@/components/friends/PersonRow'
+import { useSuggestedUsers } from '@/features/friends/use-suggested-users'
 
 export function SuggestedPeopleCard() {
+  const query = useSuggestedUsers()
+  const users = query.users.slice(0, 3)
+
   return (
-    <section className="rounded-lg bg-card p-6 shadow-sm">
-      <header className="mb-4 flex items-center justify-between">
-        <h4 className="text-base font-semibold">Suggested People</h4>
+    <section className="rounded-lg bg-card p-4 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold">Suggested People</h2>
         <button
           type="button"
-          onClick={() => toast.info("See all coming soon")}
-          className="text-xs font-medium text-primary hover:underline"
+          onClick={() => toast.info('Browse all coming soon')}
+          className="text-xs text-muted-foreground hover:underline"
         >
           See All
         </button>
-      </header>
-      <ul className="space-y-4">
-        {SAMPLE_SUGGESTED_PEOPLE.map((p) => (
-          <li key={p.id} className="flex items-center gap-3">
-            <Avatar className="size-10">
-              <AvatarImage src={p.avatar} alt={p.name} />
-              <AvatarFallback>{p.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{p.name}</p>
-              <p className="truncate text-xs text-muted-foreground">
-                {p.title}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => toast.info("Friend request coming soon")}
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Connect
-            </button>
-          </li>
-        ))}
-      </ul>
+      </div>
+      {query.isLoading ? (
+        <div className="space-y-3">
+          <FriendsSkeletonRow />
+          <FriendsSkeletonRow />
+          <FriendsSkeletonRow />
+        </div>
+      ) : query.isError ? (
+        <p className="text-xs text-muted-foreground">
+          Couldn&apos;t load suggestions.
+        </p>
+      ) : users.length === 0 ? (
+        <p className="text-xs text-muted-foreground">No suggestions yet.</p>
+      ) : (
+        <ul className="space-y-3">
+          {users.map((u) => (
+            <li key={u.id}>
+              <PersonRow
+                user={u}
+                avatarSize="sm"
+                profileLinkUserId={u.id}
+                action={<FriendshipButton user={u} variant="inline" />}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
