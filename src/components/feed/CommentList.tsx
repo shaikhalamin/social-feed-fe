@@ -62,7 +62,12 @@ export function CommentList({ postId, commentCount }: Props) {
   return (
     <div className="space-y-3">
       {query.comments.map((c) => (
-        <CommentRow key={c.id} comment={c} pending={pendingIds.has(c.id)} />
+        <CommentRow
+          key={c.id}
+          comment={c}
+          postId={postId}
+          pending={pendingIds.has(c.id)}
+        />
       ))}
       {query.hasNextPage ? (
         <button
