@@ -7,6 +7,8 @@ import { CommentComposer } from './CommentComposer'
 import { CommentList } from './CommentList'
 import { PostCardCounters } from './PostCardCounters'
 import { PostCardReactions } from './PostCardReactions'
+import { PostImageGrid } from './PostImageGrid'
+import { PostOwnerMenu } from './PostOwnerMenu'
 
 function authorInitials(first: string, last: string): string {
   const f = first.trim().charAt(0)
@@ -35,15 +37,20 @@ export function PostCard({ post }: Props) {
             {authorInitials(post.author.firstName, post.author.lastName)}
           </AvatarFallback>
         </Avatar>
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold">{fullName}</div>
           <div className="text-xs text-muted-foreground">
             {formatTimeAgo(post.createdAt)}
           </div>
         </div>
+        <PostOwnerMenu post={post} />
       </div>
 
-      <p className="whitespace-pre-line text-sm">{post.content}</p>
+      {post.content.length > 0 ? (
+        <p className="whitespace-pre-line text-sm">{post.content}</p>
+      ) : null}
+
+      {post.images.length > 0 ? <PostImageGrid images={post.images} /> : null}
 
       <PostCardCounters post={post} />
 
