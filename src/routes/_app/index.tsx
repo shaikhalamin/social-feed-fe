@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { ComposerPlaceholder } from "@/components/shell/center-stubs/ComposerPlaceholder"
-import { FeedPlaceholder } from "@/components/shell/center-stubs/FeedPlaceholder"
-import { StoriesCarousel } from "@/components/shell/center-stubs/StoriesCarousel"
+import { createFileRoute } from '@tanstack/react-router'
+import { StoriesCarousel } from '@/components/shell/center-stubs/StoriesCarousel'
+import { Composer } from '@/components/feed/Composer'
+import { FeedList } from '@/components/feed/FeedList'
 
-export const Route = createFileRoute("/_app/")({
+export const Route = createFileRoute('/_app/')({
   component: AppIndex,
 })
 
@@ -11,8 +11,8 @@ function AppIndex() {
   return (
     <div className="space-y-6">
       <StoriesCarousel />
-      <ComposerPlaceholder />
-      <FeedPlaceholder />
+      <Composer />
+      <FeedList />
     </div>
   )
 }
