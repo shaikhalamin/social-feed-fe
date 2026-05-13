@@ -1,11 +1,19 @@
 import { Button } from '@/components/ui/button'
-import { useFeed } from '@/features/feed/use-feed'
+import { FeedSkeletonCard } from '@/components/feed/FeedSkeletonCard'
+import { PostCard } from '@/components/feed/PostCard'
+import { useUserPosts } from '@/features/friends/use-user-posts'
 import { useInfiniteScrollSentinel } from '@/lib/use-infinite-scroll-sentinel'
-import { FeedSkeletonCard } from './FeedSkeletonCard'
-import { PostCard } from './PostCard'
 
-export function FeedList() {
-  const query = useFeed()
+type Props = {
+  userId: string
+  emptyCopy?: string
+}
+
+export function UserPostsList({
+  userId,
+  emptyCopy = "This user hasn't posted yet.",
+}: Props) {
+  const query = useUserPosts(userId)
   const sentinelRef = useInfiniteScrollSentinel(query)
 
   if (query.isLoading) {
@@ -22,7 +30,7 @@ export function FeedList() {
     return (
       <div className="rounded-lg bg-card p-8 text-center shadow-sm">
         <p className="text-sm text-muted-foreground">
-          Couldn&apos;t load feed. Try again.
+          Couldn&apos;t load posts. Try again.
         </p>
         <Button
           type="button"
@@ -39,33 +47,36 @@ export function FeedList() {
   if (query.posts.length === 0) {
     return (
       <div className="rounded-lg bg-card p-8 text-center shadow-sm">
-        <p className="text-sm text-muted-foreground">
-          No posts yet. Be the first to share something!
-        </p>
+        <p className="text-sm text-muted-foreground">{emptyCopy}</p>
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      {query.posts.map((p) => (
-        <PostCard key={p.id} post={p} />
+      {query.posts.map((post) => (
+        <PostCard key={post.id} post={post} />
       ))}
       {query.isFetchingNextPage ? (
         <FeedSkeletonCard />
       ) : query.isError ? (
         <div className="rounded-lg bg-card p-4 text-center shadow-sm">
-          <button
+          <p className="text-xs text-muted-foreground">
+            Couldn&apos;t load more.
+          </p>
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
+            className="mt-2"
             onClick={() => void query.fetchNextPage()}
-            className="text-sm font-medium text-primary hover:underline"
           >
-            Couldn&apos;t load more. Retry.
-          </button>
+            Retry
+          </Button>
         </div>
       ) : !query.hasNextPage ? (
         <p className="text-center text-xs text-muted-foreground">
-          You&apos;re all caught up
+          No more posts
         </p>
       ) : null}
       <div ref={sentinelRef} aria-hidden="true" className="h-px" />

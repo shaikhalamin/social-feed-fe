@@ -3,40 +3,38 @@ import { useUnlikePost } from '@/gen/api/hooks/useUnlikePost.ts'
 import { queryClient } from '@/lib/query-client'
 import { toast } from '@/components/ui/sonner'
 import type { Post } from '@/gen/api/types/Post.ts'
-import { feedQueryKey } from './use-feed'
-import type { FeedPages } from './feed-cache'
-import { patchPostInFeed } from './feed-cache'
+import type { PostListSnapshot } from './feed-cache'
+import {
+  cancelPostListQueries,
+  patchAllPostListCaches,
+  restorePostListCaches,
+  snapshotPostListCaches,
+} from './feed-cache'
 
-type LikeContext = { previous: FeedPages | undefined }
+type LikeContext = { snapshot: PostListSnapshot }
 
-function applyOptimisticToggle(
-  pages: FeedPages | undefined,
-  postId: string,
-): FeedPages | undefined {
-  return patchPostInFeed(pages, postId, (p) => ({
-    ...p,
-    viewerState: { ...p.viewerState, liked: !p.viewerState.liked },
+function applyToggle(post: Post): Post {
+  return {
+    ...post,
+    viewerState: { ...post.viewerState, liked: !post.viewerState.liked },
     counters: {
-      ...p.counters,
-      likes: p.counters.likes + (p.viewerState.liked ? -1 : 1),
+      ...post.counters,
+      likes: post.counters.likes + (post.viewerState.liked ? -1 : 1),
     },
-  }))
+  }
 }
 
 export function useTogglePostLike() {
   const like = useLikePost<LikeContext>({
     mutation: {
-      onMutate: ({ post_id }) => {
-        const previous = queryClient.getQueryData<FeedPages>(feedQueryKey)
-        queryClient.setQueryData<FeedPages>(feedQueryKey, (pages) =>
-          applyOptimisticToggle(pages, post_id),
-        )
-        return { previous }
+      onMutate: async ({ post_id }) => {
+        await cancelPostListQueries(queryClient)
+        const snapshot = snapshotPostListCaches(queryClient)
+        patchAllPostListCaches(queryClient, post_id, applyToggle)
+        return { snapshot }
       },
       onError: (_err, _vars, context) => {
-        if (context) {
-          queryClient.setQueryData<FeedPages>(feedQueryKey, context.previous)
-        }
+        if (context) restorePostListCaches(queryClient, context.snapshot)
         toast.error("Couldn't update like")
       },
     },
@@ -44,17 +42,14 @@ export function useTogglePostLike() {
 
   const unlike = useUnlikePost<LikeContext>({
     mutation: {
-      onMutate: ({ post_id }) => {
-        const previous = queryClient.getQueryData<FeedPages>(feedQueryKey)
-        queryClient.setQueryData<FeedPages>(feedQueryKey, (pages) =>
-          applyOptimisticToggle(pages, post_id),
-        )
-        return { previous }
+      onMutate: async ({ post_id }) => {
+        await cancelPostListQueries(queryClient)
+        const snapshot = snapshotPostListCaches(queryClient)
+        patchAllPostListCaches(queryClient, post_id, applyToggle)
+        return { snapshot }
       },
       onError: (_err, _vars, context) => {
-        if (context) {
-          queryClient.setQueryData<FeedPages>(feedQueryKey, context.previous)
-        }
+        if (context) restorePostListCaches(queryClient, context.snapshot)
         toast.error("Couldn't update like")
       },
     },

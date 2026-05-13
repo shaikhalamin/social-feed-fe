@@ -1,4 +1,5 @@
-import { toast } from "@/components/ui/sonner"
+import { Link } from '@tanstack/react-router'
+import { toast } from '@/components/ui/sonner'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,22 +7,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useAuthStore } from "@/hooks/use-auth"
-import { logoutCurrentDevice } from "@/lib/auth"
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useAuthStore } from '@/hooks/use-auth'
+import { logoutCurrentDevice } from '@/lib/auth'
 
 function initials(first?: string | null, last?: string | null): string {
-  const a = first?.[0]?.toUpperCase() ?? ""
-  const b = last?.[0]?.toUpperCase() ?? ""
-  return (a + b) || "?"
+  const a = first?.[0]?.toUpperCase() ?? ''
+  const b = last?.[0]?.toUpperCase() ?? ''
+  return a + b || '?'
 }
 
 export function AvatarMenu() {
   const user = useAuthStore((s) => s.user)
   const fullName = user
-    ? [user.firstName, user.lastName].filter(Boolean).join(" ")
-    : ""
+    ? [user.firstName, user.lastName].filter(Boolean).join(' ')
+    : ''
 
   return (
     <DropdownMenu>
@@ -35,7 +36,7 @@ export function AvatarMenu() {
           <Avatar className="size-9">
             <AvatarImage
               src={user?.avatarUrl ?? undefined}
-              alt={fullName || "User"}
+              alt={fullName || 'User'}
             />
             <AvatarFallback>
               {initials(user?.firstName, user?.lastName)}
@@ -47,18 +48,24 @@ export function AvatarMenu() {
         <DropdownMenuLabel>
           <div className="flex flex-col">
             <span className="text-sm font-semibold">
-              {fullName || "Anonymous"}
+              {fullName || 'Anonymous'}
             </span>
             <span className="text-xs text-muted-foreground">
-              {user?.email ?? ""}
+              {user?.email ?? ''}
             </span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => toast.info("Profile coming soon")}>
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => toast.info("Settings coming soon")}>
+        {user ? (
+          <DropdownMenuItem asChild>
+            <Link to="/users/$userId" params={{ userId: user.id }}>
+              Profile
+            </Link>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+        )}
+        <DropdownMenuItem onSelect={() => toast.info('Settings coming soon')}>
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
