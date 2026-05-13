@@ -5,6 +5,7 @@ import { toast } from '@/components/ui/sonner'
 import type { Post } from '@/gen/api/types/Post.ts'
 import type { PostListSnapshot } from './feed-cache'
 import {
+  cancelPostListQueries,
   patchAllPostListCaches,
   restorePostListCaches,
   snapshotPostListCaches,
@@ -26,7 +27,8 @@ function applyToggle(post: Post): Post {
 export function useTogglePostLike() {
   const like = useLikePost<LikeContext>({
     mutation: {
-      onMutate: ({ post_id }) => {
+      onMutate: async ({ post_id }) => {
+        await cancelPostListQueries(queryClient)
         const snapshot = snapshotPostListCaches(queryClient)
         patchAllPostListCaches(queryClient, post_id, applyToggle)
         return { snapshot }
@@ -40,7 +42,8 @@ export function useTogglePostLike() {
 
   const unlike = useUnlikePost<LikeContext>({
     mutation: {
-      onMutate: ({ post_id }) => {
+      onMutate: async ({ post_id }) => {
+        await cancelPostListQueries(queryClient)
         const snapshot = snapshotPostListCaches(queryClient)
         patchAllPostListCaches(queryClient, post_id, applyToggle)
         return { snapshot }

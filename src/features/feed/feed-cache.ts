@@ -89,6 +89,12 @@ export function snapshotPostListCaches(
   })
 }
 
+export function cancelPostListQueries(queryClient: QueryClient): Promise<void> {
+  return queryClient.cancelQueries({
+    predicate: (q) => isPostListQueryKey(q.queryKey),
+  })
+}
+
 export function patchAllPostListCaches(
   queryClient: QueryClient,
   postId: string,

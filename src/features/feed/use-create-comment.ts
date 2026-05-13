@@ -8,15 +8,13 @@ import type { ListCommentsQueryResponse } from '@/gen/api/types/ListComments.ts'
 import { commentsQueryKey } from './use-post-comments'
 import type { PostListSnapshot } from './feed-cache'
 import {
+  cancelPostListQueries,
   patchAllPostListCaches,
   restorePostListCaches,
   snapshotPostListCaches,
 } from './feed-cache'
 
-type CommentsPages = InfiniteData<
-  ListCommentsQueryResponse,
-  string | undefined
->
+type CommentsPages = InfiniteData<ListCommentsQueryResponse, string | undefined>
 
 type CommentContext = {
   tempId: string
@@ -95,9 +93,10 @@ export function useCreateCommentMutation(postId: string) {
   return useCreateComment<CommentContext>({
     mutation: {
       onMutate: async ({ data }) => {
-        await queryClient.cancelQueries({
-          queryKey: commentsQueryKey(postId),
-        })
+        await Promise.all([
+          queryClient.cancelQueries({ queryKey: commentsQueryKey(postId) }),
+          cancelPostListQueries(queryClient),
+        ])
         const tempId = crypto.randomUUID()
         const tempComment = buildOptimisticComment(postId, data.content, tempId)
         const previousComments = queryClient.getQueryData<CommentsPages>(
