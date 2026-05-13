@@ -1,48 +1,81 @@
-import { toast } from "@/components/ui/sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { SAMPLE_YOU_MIGHT_LIKE } from "@/data/sample-shell"
+import { Link } from '@tanstack/react-router'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/sonner'
+import { FriendsSkeletonRow } from '@/components/friends/FriendsSkeletonRow'
+import { FriendshipButton } from '@/components/friends/FriendshipButton'
+import { useSuggestedUsers } from '@/features/friends/use-suggested-users'
+
+function userInitials(firstName: string, lastName: string): string {
+  const f = firstName.trim().charAt(0).toUpperCase()
+  const l = lastName.trim().charAt(0).toUpperCase()
+  const combined = `${f}${l}`
+  return combined.length > 0 ? combined : '?'
+}
 
 export function YouMightLikeCard() {
-  const person = SAMPLE_YOU_MIGHT_LIKE[0]
+  const query = useSuggestedUsers()
+  const user = query.users.at(3)
 
   return (
-    <section className="rounded-lg bg-card p-6 shadow-sm">
-      <header className="mb-4 flex items-center justify-between">
-        <h4 className="text-base font-semibold">You Might Like</h4>
+    <section className="rounded-lg bg-card p-4 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold">You Might Like</h2>
         <button
           type="button"
-          onClick={() => toast.info("See all coming soon")}
-          className="text-xs font-medium text-primary hover:underline"
+          onClick={() => toast.info('Browse all coming soon')}
+          className="text-xs text-muted-foreground hover:underline"
         >
           See All
         </button>
-      </header>
-      <div className="flex flex-col items-center text-center">
-        <Avatar className="size-16">
-          <AvatarImage src={person.avatar} alt={person.name} />
-          <AvatarFallback>{person.name[0]}</AvatarFallback>
-        </Avatar>
-        <p className="mt-3 text-sm font-semibold">{person.name}</p>
-        <p className="text-xs text-muted-foreground">{person.title}</p>
-        <div className="mt-4 flex w-full gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1"
-            onClick={() => toast.info("Ignore coming soon")}
-          >
-            Ignore
-          </Button>
-          <Button
-            type="button"
-            className="flex-1"
-            onClick={() => toast.info("Friend request coming soon")}
-          >
-            Follow
-          </Button>
-        </div>
       </div>
+      {query.isLoading ? (
+        <FriendsSkeletonRow />
+      ) : query.isError ? (
+        <p className="text-xs text-muted-foreground">
+          Couldn&apos;t load suggestions.
+        </p>
+      ) : !user ? (
+        <p className="text-xs text-muted-foreground">No suggestions yet.</p>
+      ) : (
+        <div className="flex flex-col items-center text-center">
+          <Link
+            to="/users/$userId"
+            params={{ userId: user.id }}
+            className="hover:opacity-80"
+          >
+            <Avatar className="size-16">
+              {user.avatarUrl ? (
+                <AvatarImage
+                  src={user.avatarUrl}
+                  alt={`${user.firstName} ${user.lastName}`}
+                />
+              ) : null}
+              <AvatarFallback>
+                {userInitials(user.firstName, user.lastName)}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
+          <Link
+            to="/users/$userId"
+            params={{ userId: user.id }}
+            className="mt-2 text-sm font-medium hover:underline"
+          >
+            {user.firstName} {user.lastName}
+          </Link>
+          <div className="mt-3 flex w-full items-center justify-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => toast.info('Ignore coming soon')}
+            >
+              Ignore
+            </Button>
+            <FriendshipButton user={user} variant="primary" />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
