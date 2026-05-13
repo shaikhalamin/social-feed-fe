@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router"
 import { toast } from "@/components/ui/sonner"
 import {
   DropdownMenu,
@@ -55,9 +56,15 @@ export function AvatarMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => toast.info("Profile coming soon")}>
-          Profile
-        </DropdownMenuItem>
+        {user ? (
+          <DropdownMenuItem asChild>
+            <Link to="/users/$userId" params={{ userId: user.id }}>
+              Profile
+            </Link>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+        )}
         <DropdownMenuItem onSelect={() => toast.info("Settings coming soon")}>
           Settings
         </DropdownMenuItem>
