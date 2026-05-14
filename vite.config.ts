@@ -1,21 +1,27 @@
-import path from "node:path"
-import { defineConfig, loadEnv } from "vite"
-import react from "@vitejs/plugin-react"
-import tailwindcss from "@tailwindcss/vite"
-import { cloudflare } from "@cloudflare/vite-plugin"
-import tanstackRouter from "@tanstack/router-plugin/vite"
+import path from 'node:path'
+import { defineConfig, loadEnv } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import { cloudflare } from '@cloudflare/vite-plugin'
+import tanstackRouter from '@tanstack/router-plugin/vite'
 
 export default defineConfig(({ mode }) => {
-  const env: Record<string, string | undefined> = loadEnv(mode, process.cwd(), "VITE_")
-  const proxyTarget = env.VITE_DEV_API_PROXY ?? "http://localhost:8787"
+  const env: Record<string, string | undefined> = loadEnv(
+    mode,
+    process.cwd(),
+    'VITE_',
+  )
+  // const proxyTarget = env.VITE_DEV_API_PROXY ?? "http://localhost:8787"
+
+  const proxyTarget = 'https://social-feed-be.alamin-cse15.workers.dev'
 
   return {
     plugins: [
       tanstackRouter({
-        target: "react",
+        target: 'react',
         autoCodeSplitting: true,
         enableRouteGeneration: true,
-        routeFileIgnorePattern: "\\.test\\.(ts|tsx)$",
+        routeFileIgnorePattern: '\\.test\\.(ts|tsx)$',
       }),
       react(),
       cloudflare(),
@@ -23,16 +29,16 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
+        '@': path.resolve(__dirname, './src'),
       },
     },
     server: {
       port: 5173,
       proxy: {
-        "/api": {
+        '/api': {
           target: proxyTarget,
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/api/, ""),
+          rewrite: (p) => p.replace(/^\/api/, ''),
         },
       },
     },
