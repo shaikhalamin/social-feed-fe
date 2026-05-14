@@ -1,11 +1,7 @@
 import { z } from "zod"
 
-/**
- * Zod schema for the Vite env vars the app consumes. Defaults map to the
- * dev-server proxy path declared in `vite.config.ts`.
- */
 const EnvSchema = z.object({
-  VITE_API_URL: z.string().default("/api"),
+  VITE_API_URL: z.string().default("https://social-feed-be.alamin-cse15.workers.dev"),
   VITE_APP_NAME: z.string().default("Social Feed"),
 })
 

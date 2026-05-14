@@ -14,7 +14,7 @@
     "fetch-specs": "bash scripts/fetch-specs.sh",
     "generate": "kubb generate",
     "api:generate": "pnpm fetch-specs && pnpm generate",
-    "deploy": "pnpm build && wrangler deploy"
+    "deploy": "pnpm build && wrangler deploy -c dist/wrangler.json"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.26.0",
