@@ -111,7 +111,7 @@ export function FriendshipButton({
   return (
     <Button
       size={sizeProp}
-      variant={variant === 'inline' ? 'outline' : 'default'}
+      variant="default"
       disabled={isPending}
       onClick={() => send.mutate({ user: summary })}
       className={baseCls}
