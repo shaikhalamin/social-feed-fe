@@ -5,6 +5,7 @@ import { useSendFriendRequest } from '@/features/friends/use-send-friend-request
 import { useAcceptFriendRequest } from '@/features/friends/use-accept-friend-request'
 import { useDeleteFriendRelationship } from '@/features/friends/use-delete-friend-relationship'
 import { usePendingFriendshipMutationForUser } from '@/features/friends/use-pending-mutation-for-user'
+import { cn } from '@/lib/utils'
 import type { User } from '@/gen/api/types/User.ts'
 import type { UserSummary } from '@/gen/api/types/UserSummary.ts'
 
@@ -13,6 +14,7 @@ type Variant = 'primary' | 'inline'
 type Props = {
   user: User | UserSummary
   variant?: Variant
+  className?: string
 }
 
 function toUserSummary(user: User | UserSummary): UserSummary {
@@ -24,7 +26,11 @@ function toUserSummary(user: User | UserSummary): UserSummary {
   }
 }
 
-export function FriendshipButton({ user, variant = 'primary' }: Props) {
+export function FriendshipButton({
+  user,
+  variant = 'primary',
+  className,
+}: Props) {
   const { state, isLoading } = useFriendshipStatus(user.id)
   const send = useSendFriendRequest()
   const accept = useAcceptFriendRequest()
@@ -34,21 +40,19 @@ export function FriendshipButton({ user, variant = 'primary' }: Props) {
 
   if (state === 'self') return null
 
+  const sizeProp = variant === 'inline' ? 'sm' : 'default'
+  const baseCls = cn(
+    variant === 'inline' ? 'h-8 px-3 text-xs' : undefined,
+    className,
+  )
+
   if (isLoading) {
     return (
-      <Button
-        size={variant === 'inline' ? 'sm' : 'default'}
-        variant="outline"
-        disabled
-        className={variant === 'inline' ? 'h-8 px-3 text-xs' : undefined}
-      >
+      <Button size={sizeProp} variant="outline" disabled className={baseCls}>
         …
       </Button>
     )
   }
-
-  const sizeProp = variant === 'inline' ? 'sm' : 'default'
-  const baseCls = variant === 'inline' ? 'h-8 px-3 text-xs' : undefined
 
   if (state === 'incoming') {
     return (

@@ -69,10 +69,15 @@ export function YouMightLikeCard() {
               variant="outline"
               size="sm"
               onClick={() => toast.info('Ignore coming soon')}
+              className="h-8 flex-1 px-3 text-xs"
             >
               Ignore
             </Button>
-            <FriendshipButton user={user} variant="primary" />
+            <FriendshipButton
+              user={user}
+              variant="inline"
+              className="flex-1"
+            />
           </div>
         </div>
       )}
