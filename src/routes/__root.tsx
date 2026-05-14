@@ -8,7 +8,6 @@ import type {QueryClient} from "@tanstack/react-query";
 import { toast } from "@/components/ui/sonner"
 import { onAuthMessage, clearAuth } from "@/lib/auth"
 import { useAuthStore } from "@/hooks/use-auth"
-import { initializeAuth } from "@/lib/auth-init"
 import { queryClient } from "@/lib/query-client"
 
 type RouterContext = {
@@ -16,7 +15,6 @@ type RouterContext = {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  beforeLoad: initializeAuth,
   component: RootComponent,
 })
 
