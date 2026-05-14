@@ -18,7 +18,7 @@ export function FriendRequestRow({ request, kind }: Props) {
   const remove = useDeleteFriendRelationship()
   const isPending = usePendingFriendshipMutationForUser(request.user.id)
 
-  const action =
+  const actions =
     kind === 'incoming' ? (
       <div className="flex items-center gap-2">
         <Button
@@ -53,10 +53,9 @@ export function FriendRequestRow({ request, kind }: Props) {
     )
 
   return (
-    <PersonRow
-      user={request.user}
-      profileLinkUserId={request.user.id}
-      action={action}
-    />
+    <div className="space-y-2">
+      <PersonRow user={request.user} profileLinkUserId={request.user.id} />
+      <div className="pl-[3.25rem]">{actions}</div>
+    </div>
   )
 }

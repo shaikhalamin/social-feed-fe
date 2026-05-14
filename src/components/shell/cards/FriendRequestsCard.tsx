@@ -72,38 +72,32 @@ function RequestRow({ request }: { request: FriendRequest }) {
   const isPending = usePendingFriendshipMutationForUser(request.user.id)
 
   return (
-    <PersonRow
-      user={request.user}
-      avatarSize="sm"
-      profileLinkUserId={request.user.id}
-      action={
-        <div className="flex items-center gap-1.5">
-          <Button
-            size="sm"
-            variant="default"
-            disabled={isPending}
-            onClick={() => accept.mutate({ user: request.user })}
-            className="h-7 px-2.5 text-xs"
-          >
-            {isPending ? (
-              <Loader2 className="size-3 animate-spin" />
-            ) : (
-              'Accept'
-            )}
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={isPending}
-            onClick={() =>
-              remove.mutate({ user: request.user, mode: 'decline' })
-            }
-            className="h-7 px-2.5 text-xs"
-          >
-            Decline
-          </Button>
-        </div>
-      }
-    />
+    <div className="space-y-2">
+      <PersonRow
+        user={request.user}
+        avatarSize="sm"
+        profileLinkUserId={request.user.id}
+      />
+      <div className="flex items-center gap-1.5 pl-11">
+        <Button
+          size="sm"
+          variant="default"
+          disabled={isPending}
+          onClick={() => accept.mutate({ user: request.user })}
+          className="h-7 flex-1 px-2.5 text-xs"
+        >
+          {isPending ? <Loader2 className="size-3 animate-spin" /> : 'Accept'}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={isPending}
+          onClick={() => remove.mutate({ user: request.user, mode: 'decline' })}
+          className="h-7 flex-1 px-2.5 text-xs"
+        >
+          Decline
+        </Button>
+      </div>
+    </div>
   )
 }
