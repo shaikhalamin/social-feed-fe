@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import type { InfiniteData } from '@tanstack/react-query'
 import { getFeed } from '@/gen/api/clients/getFeed.ts'
+import type { FeedPost } from '@/gen/api/types/FeedPost.ts'
 import type { GetFeedQueryResponse } from '@/gen/api/types/GetFeed.ts'
-import type { Post } from '@/gen/api/types/Post.ts'
 
 export const feedQueryKey = ['feed', 'infinite'] as const
 
@@ -25,7 +25,7 @@ export function useFeed() {
         : undefined,
   })
 
-  const posts = useMemo<Post[]>(
+  const posts = useMemo<FeedPost[]>(
     () => query.data?.pages.flatMap((p) => p.data) ?? [],
     [query.data],
   )

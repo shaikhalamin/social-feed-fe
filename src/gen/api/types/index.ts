@@ -108,6 +108,7 @@ export type {
   DeleteUserMutationResponse,
   DeleteUserPathParams,
 } from './DeleteUser.ts'
+export type { FeedPost } from './FeedPost.ts'
 export type { Friend } from './Friend.ts'
 export type { FriendRequest } from './FriendRequest.ts'
 export type { Friendship, FriendshipStatusEnumKey } from './Friendship.ts'

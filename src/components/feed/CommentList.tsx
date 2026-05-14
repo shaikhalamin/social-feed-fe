@@ -2,11 +2,13 @@ import { useMemo } from 'react'
 import { useMutationState } from '@tanstack/react-query'
 import { createCommentMutationKey } from '@/gen/api/hooks/useCreateComment.ts'
 import { usePostComments } from '@/features/feed/use-post-comments'
+import type { Comment } from '@/gen/api/types/Comment.ts'
 import { CommentRow } from './CommentRow'
 
 type Props = {
   postId: string
   commentCount: number
+  initialPreview?: Comment[]
 }
 
 function pickTempId(context: unknown): string | undefined {
@@ -16,9 +18,9 @@ function pickTempId(context: unknown): string | undefined {
   return typeof val === 'string' ? val : undefined
 }
 
-export function CommentList({ postId, commentCount }: Props) {
+export function CommentList({ postId, commentCount, initialPreview }: Props) {
   const enabled = commentCount > 0
-  const query = usePostComments(postId, enabled)
+  const query = usePostComments(postId, enabled, initialPreview, commentCount)
 
   const pendingTempIds = useMutationState({
     filters: {

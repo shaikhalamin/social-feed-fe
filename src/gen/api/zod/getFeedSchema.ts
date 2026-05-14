@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { postSchema } from './postSchema.ts'
+import { feedPostSchema } from './feedPostSchema.ts'
 import { z } from 'zod/v4'
 
 export const getFeedQueryParamsSchema = z.object({
@@ -16,7 +16,7 @@ export const getFeedQueryParamsSchema = z.object({
  */
 export const getFeed200Schema = z.object({
   get data() {
-    return z.array(postSchema)
+    return z.array(feedPostSchema)
   },
   pagination: z.object({
     nextCursor: z.nullable(z.string()),

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Post } from './Post.ts'
+import type { FeedPost } from './FeedPost.ts'
 
 export type GetFeedQueryParams = {
   /**
@@ -26,7 +26,7 @@ export type GetFeed200 = {
   /**
    * @type array
    */
-  data: Post[]
+  data: FeedPost[]
   /**
    * @type object
    */

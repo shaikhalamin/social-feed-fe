@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { formatTimeAgo } from '@/lib/format'
+import type { Comment } from '@/gen/api/types/Comment.ts'
 import type { Post } from '@/gen/api/types/Post.ts'
 import { CommentComposer } from './CommentComposer'
 import { CommentList } from './CommentList'
@@ -17,7 +18,7 @@ function authorInitials(first: string, last: string): string {
 }
 
 type Props = {
-  post: Post
+  post: Post & { commentsPreview?: Comment[] }
 }
 
 export function PostCard({ post }: Props) {
@@ -63,7 +64,11 @@ export function PostCard({ post }: Props) {
 
       <div className="space-y-3">
         <CommentComposer postId={post.id} ref={commentInputRef} />
-        <CommentList postId={post.id} commentCount={post.counters.comments} />
+        <CommentList
+          postId={post.id}
+          commentCount={post.counters.comments}
+          initialPreview={post.commentsPreview}
+        />
       </div>
     </article>
   )

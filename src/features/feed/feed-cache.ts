@@ -1,5 +1,6 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query'
 import type { Comment } from '@/gen/api/types/Comment.ts'
+import type { FeedPost } from '@/gen/api/types/FeedPost.ts'
 import type { GetFeedQueryResponse } from '@/gen/api/types/GetFeed.ts'
 import type { LikesPreview } from '@/gen/api/types/LikesPreview.ts'
 import type { ListCommentsQueryResponse } from '@/gen/api/types/ListComments.ts'
@@ -30,16 +31,17 @@ export function prependPostToFeed(
   pages: FeedPages | undefined,
   post: Post,
 ): FeedPages {
+  const feedPost: FeedPost = { ...post, commentsPreview: [] }
   if (!pages || pages.pages.length === 0) {
     return {
-      pages: [{ data: [post], pagination: EMPTY_PAGINATION }],
+      pages: [{ data: [feedPost], pagination: EMPTY_PAGINATION }],
       pageParams: [undefined],
     }
   }
   const [first, ...rest] = pages.pages
   const updatedFirst: GetFeedQueryResponse = {
     ...first,
-    data: [post, ...first.data],
+    data: [feedPost, ...first.data],
   }
   return { ...pages, pages: [updatedFirst, ...rest] }
 }

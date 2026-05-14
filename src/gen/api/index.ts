@@ -165,6 +165,7 @@ export type {
   DeleteUserMutationResponse,
   DeleteUserPathParams,
 } from './types/DeleteUser.ts'
+export type { FeedPost } from './types/FeedPost.ts'
 export type { Friend } from './types/Friend.ts'
 export type { FriendRequest } from './types/FriendRequest.ts'
 export type { Friendship, FriendshipStatusEnumKey } from './types/Friendship.ts'
@@ -809,6 +810,7 @@ export {
   deleteUserMutationResponseSchema,
   deleteUserPathParamsSchema,
 } from './zod/deleteUserSchema.ts'
+export { feedPostSchema } from './zod/feedPostSchema.ts'
 export { friendRequestSchema } from './zod/friendRequestSchema.ts'
 export { friendSchema } from './zod/friendSchema.ts'
 export { friendshipSchema } from './zod/friendshipSchema.ts'

@@ -96,6 +96,7 @@ export {
   deleteUserMutationResponseSchema,
   deleteUserPathParamsSchema,
 } from './deleteUserSchema.ts'
+export { feedPostSchema } from './feedPostSchema.ts'
 export { friendRequestSchema } from './friendRequestSchema.ts'
 export { friendSchema } from './friendSchema.ts'
 export { friendshipSchema } from './friendshipSchema.ts'
