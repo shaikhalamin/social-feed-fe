@@ -1,217 +1,148 @@
-Welcome to your new TanStack Start app! 
+# Social Feed — Frontend
 
-# Getting Started
+A small social network UI: feed, posts, comments, friends, and friend requests. Single-page app talking to a separate backend over a typed OpenAPI client.
 
-To run this application:
+Live: https://social-feed-fe.alamin-cse15.workers.dev
+
+## Tech Stack
+
+- **React 19** + **TypeScript** (strict, no `any`, no suppressions)
+- **TanStack Router** — file-based routing with route guards
+- **TanStack Query** — server state, caching, optimistic updates
+- **Zustand** — client-side auth state
+- **ky** — HTTP client with interceptors
+- **Kubb** — generates typed API clients, React Query hooks, and Zod schemas from the backend's `openapi.json`
+- **Tailwind v4** + **shadcn/ui** — styling and component primitives
+- **Zod** — env parsing and API response validation
+- **Vite** — bundler and dev server
+- **Vitest** — unit tests (jsdom)
+- **Cloudflare Workers** — production hosting (static SPA via Wrangler)
+
+## Features
+
+- **Auth** — signup, login, silent refresh, logout, cross-tab sync
+- **Feed** — infinite-scroll feed, create text/image posts, edit visibility, delete
+- **Comments** — nested replies, edit, delete, likes, like-previews
+- **Posts** — like / unlike, post-like previews
+- **Friends** — send, accept, decline, cancel, unfriend
+- **Friend Requests** — dedicated page (incoming + outgoing) and a sidebar card with inline Accept / Decline
+- **Profiles** — public user profile, user posts list, edit own profile, avatar upload
+- **Media** — direct-to-R2 image uploads via backend-issued presigned URLs
+- **UI shell** — 3-column layout (left/right sidebars), suggested people, your friends, "You Might Like", light/dark theme with no-flash cold load
+
+## Implementation Notes
+
+### Auth
+
+Access token lives only in memory (`src/lib/auth.ts`); the refresh token is an `httpOnly` cookie set by the backend. Every request runs with `credentials: "include"`.
+
+The authenticated ky instance (`src/lib/api-client.ts`):
+
+- `beforeRequest` attaches `Authorization: Bearer …`
+- `afterResponse` catches 401, calls `tryRefreshToken()` (deduplicated via a shared promise so concurrent 401s don't fan out into N refresh calls), retries the original request, or clears state and redirects to login
+
+A separate **bare** ky instance (`bareApiClient`) is used during bootstrap and inside the refresh/logout flow to avoid recursive interceptors.
+
+Route guards live on the layout routes:
+
+- `_app.tsx` runs `initializeAuth` (silent refresh + `/me`) on first load, then redirects unauthenticated users to `/auth/login`, preserving the requested path in `?redirect=`
+- `auth.tsx` bounces already-authenticated users to a safe target
+- `safeRedirectPath` sanitises the `?redirect=` param so it can't be used for open-redirects
+
+### API layer (generated)
+
+`pnpm api:generate` curls the backend's `/openapi.json` and runs Kubb against it. Output lands in `src/gen/api/` (gitignored from TypeScript via `tsconfig.exclude`):
+
+- `clients/<op>.ts` — fetch wrappers
+- `hooks/use<Op>.ts` — React Query hooks
+- `types/`, `zod/`, `schemas/` — TS types, Zod schemas, raw JSON Schemas
+
+A custom adapter (`src/lib/kubb-clients/create-client.ts`) maps ky's `Response`/`HTTPError` into Kubb's `RequestConfig` / `ApiError` shape so the generated hooks plug straight into TanStack Query.
+
+**Nothing in `src/gen/` is hand-edited.** Domain logic that wraps a generated hook (post-success side effects, optimistic cache updates) lives in `src/features/<domain>/` — e.g. `features/auth/use-login.ts` wraps `gen/api/hooks/useLogin.ts` and stores the token + user state after success.
+
+### Data flow / state
+
+- **Server state** → TanStack Query (`staleTime: 5m`, `gcTime: 10m`, no retries on 401/403/404)
+- **Client state** → Zustand (auth only)
+- **Forms** → `@tanstack/react-form` + Zod (often the generated `gen/api/zod/` schemas)
+
+Mutations use **optimistic updates** wherever the UX benefits: friend request accept/decline/cancel/unfriend immediately mutate the cached friend & request lists, then roll back on error (with a toast and a refetch for 409 conflicts). See `src/features/friends/friends-cache.ts` for the shared cache helpers.
+
+### Routing
+
+File-based via `@tanstack/router-plugin`. Two top-level groups under `__root.tsx`:
+
+- `_app.tsx` — authenticated layout (3-column shell), child routes in `src/routes/_app/`
+- `auth.tsx` — `/auth/login`, `/auth/signup`
+
+`routeTree.gen.ts` is generated on save and never edited by hand.
+
+### UI
+
+- Tailwind v4 via `@tailwindcss/vite` and a single global stylesheet (`src/index.css`)
+- shadcn/ui (new-york, slate base) under `src/components/ui/`
+- Reusable shell pieces in `src/components/shell/` (sidebars, cards, header, theme toggle)
+- Light/dark theme: cold-load `<script>` in `index.html` reads `localStorage.theme` before paint to prevent FOUC; runtime helpers in `src/lib/theme.ts`
+- Conditional classes through `cn()` (`clsx + tailwind-merge`)
+
+### Env
+
+All `import.meta.env` access goes through `src/lib/env/index.ts`, which validates a Zod schema at module load. Adding a new public var means extending `EnvSchema` and prefixing it with `VITE_`. `VITE_API_URL` defaults to `/api`, which Vite proxies to `http://localhost:8787` in dev.
+
+### Type / lint discipline
+
+- `tsconfig.json` enables `strict`, `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`, `noUncheckedSideEffectImports`, `isolatedModules`
+- No `any`, no unsafe casts, no `!` non-null assertions
+- No `eslint-disable` / `@ts-expect-error` / `@ts-ignore` anywhere
+- External data is parsed (Zod) at boundaries, not cast
+- `pnpm typecheck` and `pnpm lint` must pass clean — the build gates on `tsc -b`
+
+## Local Development
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev               # vite dev server on :3000, proxies /api/* to :8787
 ```
 
-# Building For Production
-
-To build this application for production:
+The backend dev server must be running on `http://localhost:8787`. Regenerate the API layer after backend changes:
 
 ```bash
-npm run build
+pnpm api:generate      # fetch openapi.json + run kubb
 ```
 
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+Other scripts:
 
 ```bash
-npm run test
+pnpm typecheck         # tsc -b
+pnpm test              # vitest
+pnpm lint              # eslint
+pnpm format            # prettier --write + eslint --fix
+pnpm build             # tsc -b && vite build
+pnpm run deploy        # build + wrangler deploy
 ```
 
-## Styling
+## Project Structure
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+```
+src/
+  routes/              file-based routes (TanStack Router)
+    _app/              authenticated pages
+    auth/              login + signup
+  components/
+    ui/                shadcn/ui primitives
+    shell/             3-column layout, sidebars, cards
+    friends/           friend rows + friendship buttons
+  features/<domain>/   domain hooks (auth, feed, friends, media, profile)
+  gen/api/             generated Kubb clients + hooks + types (gitignored)
+  lib/                 ky clients, env, query client, utils
+  hooks/               cross-cutting hooks (auth store, theme)
+```
 
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+## Deploying
 
 ```bash
-npm run lint
-npm run format
-npm run check
+pnpm run deploy        # builds and publishes to Cloudflare Workers
 ```
 
-
-## Deploy to Cloudflare Workers
-
-This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) and `wrangler.jsonc`:
-
-1. Install Wrangler: `npm install -g wrangler`
-2. Authenticate: `wrangler login`
-3. Deploy: `npx wrangler deploy`
-
-For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`. Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
-
-KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Production env vars go through `wrangler secret put` (for secrets) or `wrangler.jsonc` `vars` (for public).
