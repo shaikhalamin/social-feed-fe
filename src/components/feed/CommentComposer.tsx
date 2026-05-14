@@ -25,10 +25,12 @@ export const CommentComposer = forwardRef<HTMLTextAreaElement, Props>(
 
     const submit = () => {
       if (!canSubmit) return
+      const previous = content
+      setContent('')
       mutation.mutate(
         { post_id: postId, data: { content: trimmed } },
         {
-          onSuccess: () => setContent(''),
+          onError: () => setContent(previous),
         },
       )
     }
