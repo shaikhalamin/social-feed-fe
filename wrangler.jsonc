@@ -5,9 +5,18 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
   },
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
+  "env": {
+    "production": {
+      "name": "social-feed-fe",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "VITE_DEV_API_PROXY": "https://social-feed-be.alamin-cse15.workers.dev",
+      },
+    },
+  },
 }
